@@ -3,6 +3,7 @@
 public class DoubleJumpController : MonoBehaviour
 {
 
+    public string jumpButtonName;
     public float jumpForce;
 
     private Rigidbody2D playerRB;
@@ -18,7 +19,7 @@ public class DoubleJumpController : MonoBehaviour
 
     protected virtual void FixedUpdate()
     {
-        if (Input.GetButtonDown("Jump") && this.numJumps < 2)
+        if (Input.GetButtonDown(this.jumpButtonName) && this.numJumps < 2)
         {
             this.numJumps++;
             this.playerRB.AddForce(Vector2.up * this.jumpForce * Time.deltaTime);
@@ -27,7 +28,7 @@ public class DoubleJumpController : MonoBehaviour
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Platform"))
+        if (collision.CompareTag("Platform") || collision.CompareTag("Player"))
             this.numJumps = 0;
     }
 }

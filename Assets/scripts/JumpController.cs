@@ -3,6 +3,7 @@
 public class JumpController : MonoBehaviour
 {
 
+    public string jumpButtonName;
     public float jumpForce;
 
     private Rigidbody2D playerRB;
@@ -18,7 +19,7 @@ public class JumpController : MonoBehaviour
 
     protected virtual void FixedUpdate()
     {
-        if (Input.GetButtonDown("Jump") && this.canJump)
+        if (Input.GetButtonDown(this.jumpButtonName) && this.canJump)
         {
             this.canJump = false;
             this.playerRB.AddForce(jumpForce * Vector2.up * Time.deltaTime);
@@ -28,8 +29,7 @@ public class JumpController : MonoBehaviour
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        MonoBehaviour.print("grounded!");
-        if (collision.CompareTag("Platform"))
+        if (collision.CompareTag("Platform") || collision.CompareTag("Player"))
             this.canJump = true;
     }
 }

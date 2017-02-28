@@ -3,6 +3,8 @@ using UnityEngine;
 public class HorizontalController : MonoBehaviour
 {
 
+    public string horizontalAxisName;
+
     public float maxSpeed;
     public float acceleration;
 
@@ -15,7 +17,7 @@ public class HorizontalController : MonoBehaviour
 
     protected virtual void FixedUpdate()
     {
-        float horizontal = Input.GetAxis("Horizontal");
+        float horizontal = Input.GetAxis(this.horizontalAxisName);
         this.playerRB.AddForce(Vector2.right * this.acceleration * horizontal);
 
         if (Mathf.Abs(this.playerRB.velocity.x) >= this.maxSpeed)
