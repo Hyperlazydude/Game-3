@@ -33,13 +33,24 @@ public class SimpleEnemyController : MonoBehaviour {
             this.grounded = true;
         else if (collision.collider.CompareTag("Player"))
         {
-            GameObject playerObject = collision.gameObject;
+            float enemyY, ignore;
 
-            JumpController jumpController = playerObject.GetComponent<JumpController>();
-            Rigidbody2D playerRB = playerObject.GetComponent<Rigidbody2D>();
+            CollisionUtilities.GetBoundsYLimits(this.enemyCollider.bounds, out ignore, out enemyY);
+            
+            ContactPoint2D[] contacts = collision.contacts;
+            float firstContactY = contacts.First().point.y;
+            float lastContactY = contacts.Last().point.y;
 
-            playerRB.AddForce(jumpController.jumpForce * Vector2.up * Time.deltaTime);
-            Object.Destroy(this.gameObject);
+            if (Mathf.Abs(firstContactY - enemyY) < 0.05 && Mathf.Abs(lastContactY - enemyY) < 0.05)
+            {
+                GameObject playerObject = collision.gameObject;
+
+                JumpController jumpController = playerObject.GetComponent<JumpController>();
+                Rigidbody2D playerRB = playerObject.GetComponent<Rigidbody2D>();
+
+                playerRB.AddForce(jumpController.jumpForce * Vector2.up * Time.deltaTime);
+                Object.Destroy(this.gameObject);
+            }
         }
 
     }

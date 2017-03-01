@@ -21,4 +21,13 @@ public static class CollisionUtilities
         min = boundsCenter - halfWidth;
         max = boundsCenter + halfWidth;
     }
+
+    public static void GetBoundsYLimits(Bounds bounds, out float min, out float max)
+    {
+        float boundsCenter = bounds.center.y;
+        float halfHeight = bounds.extents.y;
+
+        min = boundsCenter - halfHeight;
+        max = boundsCenter + halfHeight;
+    }
 }

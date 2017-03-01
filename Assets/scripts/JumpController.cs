@@ -46,7 +46,6 @@ public class JumpController : MonoBehaviour
         {
             case "Platform":
             case "Player":
-            case "Enemy":
                 if (collision.gameObject.CompareTag("Platform") || collision.gameObject.CompareTag("Player"))
                     this.numJumps = 0;
                 break;
