@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 public class RespawnController : MonoBehaviour
@@ -7,8 +8,10 @@ public class RespawnController : MonoBehaviour
 
     private HorizontalController movement;
     private JumpController jumping;
+
     private Material material;
     private Transform playerTransform;
+    private Collider2D playerCollider;
     private Rigidbody2D playerRB;
 
     private Vector3 lastPosition;
@@ -19,8 +22,10 @@ public class RespawnController : MonoBehaviour
     {
         this.movement = this.GetComponent<HorizontalController>();
         this.jumping = this.GetComponent<JumpController>();
+
         this.material = this.GetComponent<Renderer>().material;
         this.playerTransform = this.GetComponent<Transform>();
+        this.playerCollider = this.GetComponent<Collider2D>();
         this.playerRB = this.GetComponent<Rigidbody2D>();
 
         this.lastPosition = this.playerTransform.position;
@@ -38,9 +43,23 @@ public class RespawnController : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
-        this.lastPosition = this.transform.position;
+        if (collision.gameObject.CompareTag("Platform"))
+        {
+            float center = this.playerCollider.bounds.center.x;
+            float extents = this.playerCollider.bounds.extents.x;
+
+            float min = center - extents;
+            float max = center + extents;
+
+            float platformMin = collision.contacts.First().point.x;
+            float platformMax = collision.contacts.Last().point.x;
+
+            if (min >= platformMin && max <= platformMax)
+                this.lastPosition = this.transform.position;
+
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

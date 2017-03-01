@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 public class JumpController : MonoBehaviour
 {
@@ -39,9 +40,9 @@ public class JumpController : MonoBehaviour
         }
     }
 
-    protected virtual void OnTriggerEnter2D(Collider2D collision)
+    protected void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.CompareTag("Platform") || collision.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Platform") || collision.gameObject.CompareTag("Player"))
             this.numJumps = 0;
     }
 }
