@@ -45,21 +45,11 @@ public class RespawnController : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Platform"))
-        {
-            float center = this.playerCollider.bounds.center.x;
-            float extents = this.playerCollider.bounds.extents.x;
-
-            float min = center - extents;
-            float max = center + extents;
-
-            float platformMin = collision.contacts.First().point.x;
-            float platformMax = collision.contacts.Last().point.x;
-
-            if (min >= platformMin && max <= platformMax)
-                this.lastPosition = this.transform.position;
-
-        }
+        if (
+            collision.gameObject.CompareTag("Platform") && 
+            CollisionUtilities.FullyContactingPlatform(collision.collider.bounds, this.playerCollider.bounds)
+        )
+            this.lastPosition = this.transform.position;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -85,5 +75,5 @@ public class RespawnController : MonoBehaviour
 
         this.material.color *= new Vector4(1, 1, 1, 2);
     }
-
+    
 }

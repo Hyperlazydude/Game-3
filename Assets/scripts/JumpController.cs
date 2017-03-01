@@ -42,7 +42,16 @@ public class JumpController : MonoBehaviour
 
     protected void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Platform") || collision.gameObject.CompareTag("Player"))
-            this.numJumps = 0;
+        switch (collision.gameObject.tag)
+        {
+            case "Platform":
+            case "Player":
+            case "Enemy":
+                if (collision.gameObject.CompareTag("Platform") || collision.gameObject.CompareTag("Player"))
+                    this.numJumps = 0;
+                break;
+            
+        }
+        
     }
 }
