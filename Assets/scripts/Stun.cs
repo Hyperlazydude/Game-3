@@ -8,10 +8,14 @@ public class Stun : MonoBehaviour {
 	public bool isVulnerable;
 	public float stunDuration;
 	private HorizontalController movement;
+	private JumpController jump;
+	private ShootAbility shoot;
 	private Animator anim;
 
 	private void Awake () {
 		movement = GetComponent<HorizontalController> ();
+		jump = GetComponent<JumpController> ();
+		shoot = GetComponent<ShootAbility> ();
 		anim = GetComponent<Animator> ();
 		isVulnerable = true;
 	}
@@ -22,6 +26,8 @@ public class Stun : MonoBehaviour {
 	private void MakeVulnerable () {
 		anim.SetTrigger ("Vulnerable");
 		movement.enabled = true;
+		jump.enabled = true;
+		shoot.enabled = true;
 		isVulnerable = true;
 
 	}
@@ -30,6 +36,8 @@ public class Stun : MonoBehaviour {
 		anim.SetTrigger ("isVulnerable");
 		isVulnerable = false;
 		movement.enabled = false;
+		jump.enabled = false;
+		shoot.enabled = false;
 		Invoke ("MakeVulnerable", stunDuration);
 	}
 
