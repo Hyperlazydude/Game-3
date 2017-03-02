@@ -5,7 +5,8 @@ public class SpriteOrientationController : MonoBehaviour
     private Rigidbody2D entityRB;
     private Transform entityTransform;
 
-    private short lastOrientation;
+    [HideInInspector]
+    public short lastOrientation;
 
     private void Awake()
     {
@@ -17,10 +18,12 @@ public class SpriteOrientationController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        short currentOrientation = (short)Mathf.Sign(this.entityRB.velocity.x);
-        if (currentOrientation != 0 && this.lastOrientation != currentOrientation)
+        short currentOrientation = (short) this.entityRB.velocity.x;
+        short orientationSign = (short)Mathf.Sign(currentOrientation);
+
+        if (currentOrientation != 0 && this.lastOrientation != orientationSign)
         {
-            this.lastOrientation = currentOrientation;
+            this.lastOrientation = orientationSign;
             this.entityTransform.localScale = Vector3.Scale(this.entityTransform.localScale, new Vector3(-1, 1, 1));
         }
     }

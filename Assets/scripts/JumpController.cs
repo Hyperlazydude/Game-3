@@ -40,7 +40,7 @@ public class JumpController : MonoBehaviour
         }
     }
 
-    protected void OnCollisionEnter2D(Collision2D collision)
+    protected void OnCollisionStay2D(Collision2D collision)
     {
         switch (collision.gameObject.tag)
         {

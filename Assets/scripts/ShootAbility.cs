@@ -24,8 +24,14 @@ public class ShootAbility : MonoBehaviour {
 			timeBetweenShots -= Time.deltaTime;
 			if (timeBetweenShots <= 0) {
 				timeBetweenShots = current;
-				Bullet newBullet = Instantiate (bullet, point.position, point.rotation) as Bullet;
-				newBullet.speed = speed;
+
+                short orientation = this.GetComponent<SpriteOrientationController>().lastOrientation;
+
+                Vector3 position = point.position;
+                position.x += orientation;
+                Bullet newBullet = Instantiate (bullet, position, point.rotation) as Bullet;
+
+                newBullet.speed = speed * orientation;
 				Destroy (newBullet.gameObject, timeDelete);
 			}
 		} else {
