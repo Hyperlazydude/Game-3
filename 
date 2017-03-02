@@ -1,0 +1,64 @@
+[1mdiff --git a/Assets/scripts/HorizontalController.cs b/Assets/scripts/HorizontalController.cs[m
+[1mindex 71a6fd6..0afe703 100755[m
+[1m--- a/Assets/scripts/HorizontalController.cs[m
+[1m+++ b/Assets/scripts/HorizontalController.cs[m
+[36m@@ -9,22 +9,33 @@[m [mpublic class HorizontalController : MonoBehaviour[m
+     public float acceleration;[m
+ [m
+     protected Rigidbody2D playerRB;[m
+[31m-	protected bool right = true;[m
+[32m+[m[32m    protected short lastDirection;[m[41m[m
+[32m+[m[32m    protected bool right = false;[m[41m[m
+ [m
+     protected virtual void Awake()[m
+     {[m
+         this.playerRB = this.GetComponent<Rigidbody2D>();[m
+[32m+[m[32m        this.lastDirection = 0;[m[41m[m
+     }[m
+ [m
+     protected virtual void FixedUpdate()[m
+     {[m
+         float horizontal = Input.GetAxis(this.horizontalAxisName);[m
+[31m-		flip (horizontal);[m
+         this.playerRB.AddForce(Vector2.right * this.acceleration * horizontal);[m
+[31m-[m
+[32m+[m[41m        [m
+         if (Mathf.Abs(this.playerRB.velocity.x) >= this.maxSpeed)[m
+             this.playerRB.velocity = new Vector2(this.maxSpeed * horizontal, this.playerRB.velocity.y);[m
+[31m-        [m
+[32m+[m[41m[m
+[32m+[m[32m        this.flip(horizontal);[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m        //short currentDirection = (short)Mathf.Sign(horizontal);[m[41m[m
+[32m+[m[32m        //if (currentDirection != this.lastDirection)[m[41m[m
+[32m+[m[32m        //{[m[41m[m
+[32m+[m[32m        //    transform.localScale.Scale(new Vector3(currentDirection == 0 ? 1 : currentDirection, 1, 1));[m[41m[m
+[32m+[m[32m        //    this.lastDirection = currentDirection;[m[41m[m
+[32m+[m[32m        //}[m[41m[m
+[32m+[m[41m[m
+[32m+[m[41m[m
+     }[m
+ 	protected void flip (float horizontal){[m
+ 		if (horizontal < 0 && right == true) {[m
+[1mdiff --git a/Assets/scripts/JumpController.cs b/Assets/scripts/JumpController.cs[m
+[1mindex 65d62d1..5f785b5 100755[m
+[1m--- a/Assets/scripts/JumpController.cs[m
+[1m+++ b/Assets/scripts/JumpController.cs[m
+[36m@@ -46,10 +46,11 @@[m [mpublic class JumpController : MonoBehaviour[m
+         {[m
+             case "Platform":[m
+             case "Player":[m
+[31m-                if (collision.gameObject.CompareTag("Platform") || collision.gameObject.CompareTag("Player"))[m
+[31m-                    this.numJumps = 0;[m
+[32m+[m[32m                this.numJumps = 0;[m[41m[m
+[32m+[m[32m                break;[m[41m[m
+[32m+[m[32m            case "Enemy":[m[41m[m
+[32m+[m[32m                this.numJumps = 1;[m[41m[m
+                 break;[m
+[31m-            [m
+         }[m
+         [m
+     }[m
+[1mdiff --git a/Assets/test/enemy/test-enemy.unity b/Assets/test/enemy/test-enemy.unity[m
+[1mindex a580af1..9732730 100755[m
+Binary files a/Assets/test/enemy/test-enemy.unity and b/Assets/test/enemy/test-enemy.unity differ
