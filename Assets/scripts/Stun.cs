@@ -7,15 +7,10 @@ public class Stun : MonoBehaviour {
 	//public UnityEvent hit;
 	public bool isVulnerable;
 	public float stunDuration;
-	private HorizontalController movement;
-	private JumpController jump;
-	private ShootAbility shoot;
 	private Animator anim;
-
+	private MonoBehaviour[] scripts;
 	private void Awake () {
-		movement = GetComponent<HorizontalController> ();
-		jump = GetComponent<JumpController> ();
-		shoot = GetComponent<ShootAbility> ();
+		scripts = this.gameObject.GetComponents<MonoBehaviour> ();
 		anim = GetComponent<Animator> ();
 		isVulnerable = true;
 	}
@@ -25,9 +20,9 @@ public class Stun : MonoBehaviour {
 	}
 	private void MakeVulnerable () {
 		anim.SetTrigger ("Vulnerable");
-		movement.enabled = true;
-		jump.enabled = true;
-		shoot.enabled = true;
+		foreach (MonoBehaviour script in scripts) {
+			script.enabled = true;
+		}
 		isVulnerable = true;
 
 	}
@@ -35,9 +30,9 @@ public class Stun : MonoBehaviour {
 	public void MakeInvulnerable () {
 		anim.SetTrigger ("isVulnerable");
 		isVulnerable = false;
-		movement.enabled = false;
-		jump.enabled = false;
-		shoot.enabled = false;
+		foreach (MonoBehaviour script in scripts) {
+			script.enabled = false;
+		}
 		Invoke ("MakeVulnerable", stunDuration);
 	}
 
