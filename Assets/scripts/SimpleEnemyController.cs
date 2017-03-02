@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using UnityEngine;
+using System.Collections;
 
 public class SimpleEnemyController : MonoBehaviour {
 
@@ -7,10 +8,12 @@ public class SimpleEnemyController : MonoBehaviour {
 
     private Rigidbody2D enemyRB;
     private Collider2D enemyCollider;
+	private Stun stun;
     
     private bool direction;
 
     private bool grounded;
+
 
     private void Awake()
     {
@@ -41,16 +44,22 @@ public class SimpleEnemyController : MonoBehaviour {
             float firstContactY = contacts.First().point.y;
             float lastContactY = contacts.Last().point.y;
 
-            if (Mathf.Abs(firstContactY - enemyY) < 0.05 && Mathf.Abs(lastContactY - enemyY) < 0.05)
-            {
-                GameObject playerObject = collision.gameObject;
+			if (Mathf.Abs (firstContactY - enemyY) < 0.05 && Mathf.Abs (lastContactY - enemyY) < 0.05) {
+				GameObject playerObject = collision.gameObject;
 
-                JumpController jumpController = playerObject.GetComponent<JumpController>();
-                Rigidbody2D playerRB = playerObject.GetComponent<Rigidbody2D>();
+				JumpController jumpController = playerObject.GetComponent<JumpController> ();
+				Rigidbody2D playerRB = playerObject.GetComponent<Rigidbody2D> ();
 
-                playerRB.AddForce(jumpController.jumpForce * Vector2.up * Time.deltaTime);
-                Object.Destroy(this.gameObject);
-            }
+				playerRB.AddForce (jumpController.jumpForce * Vector2.up * Time.deltaTime);
+				Object.Destroy (this.gameObject);
+			} else {
+				stun = collision.gameObject.GetComponent<Stun> ();
+				if (stun.isVulnerable) {
+					stun.MakeInvulnerable ();
+					Physics2D.IgnoreCollision(collision.gameObject.GetComponent<BoxCollider2D>(), this.GetComponent<BoxCollider2D>());
+					StartCoroutine (collisionOn (stun.stunDuration, collision));
+				}
+			}
         }
 
     }
@@ -63,5 +72,11 @@ public class SimpleEnemyController : MonoBehaviour {
         )
             this.direction = !this.direction;
     }
+
+	private IEnumerator collisionOn (float seconds, Collision2D collision) {
+		yield return new WaitForSeconds (seconds);
+		Physics2D.IgnoreCollision(collision.gameObject.GetComponent<BoxCollider2D>(), this.GetComponent<BoxCollider2D>(), false);
+	}
+
 
 }
