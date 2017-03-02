@@ -27,7 +27,11 @@ public class SimpleEnemyController : MonoBehaviour {
     private void FixedUpdate()
     {
         if (this.grounded)
-            this.enemyRB.MovePosition(this.enemyRB.position + Vector2.right * this.enemySpeed * (this.direction ? 1 : -1) * Time.deltaTime);
+        {
+            Vector2 velocity = this.enemyRB.velocity;
+            velocity.x = this.enemySpeed * (this.direction ? 1 : -1);
+            this.enemyRB.velocity = velocity;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -66,11 +70,14 @@ public class SimpleEnemyController : MonoBehaviour {
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (
-            collision.gameObject.CompareTag("Platform") && 
-            !CollisionUtilities.FullyContactingPlatform(collision.collider.bounds, this.enemyCollider.bounds)
-        )
-            this.direction = !this.direction;
+        if (collision.gameObject.CompareTag("Platform")) {
+            //Vector2 velocity = this.enemyRB.velocity;
+            //velocity.y = collision.rigidbody.velocity.y;
+            //this.enemyRB.velocity = velocity;
+            if (!CollisionUtilities.FullyContactingPlatform(collision.collider.bounds, this.enemyCollider.bounds))
+                this.direction = !this.direction;
+        }
+            
     }
 
 	private IEnumerator collisionOn (float seconds, Collision2D collision) {

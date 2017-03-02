@@ -53,4 +53,17 @@ public class JumpController : MonoBehaviour
         }
         
     }
+
+    protected void OnCollisionExit2D(Collision2D collision)
+    {
+        switch (collision.gameObject.tag)
+        {
+            case "Platform":
+            case "Player":
+                if (collision.gameObject.CompareTag("Platform") || collision.gameObject.CompareTag("Player"))
+                    this.numJumps = 1;
+                break;
+
+        }
+    }
 }
