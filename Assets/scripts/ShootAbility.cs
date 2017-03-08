@@ -18,8 +18,8 @@ public class ShootAbility : MonoBehaviour {
 	}
 	
 	private void Update () {
-        if (this.playerManager.GetButtonDown("Ability") && this.playerManager.abilityEnabled)
-            this.StartCoroutine(this.Shoot());
+		if (this.playerManager.GetButtonDown ("Ability") && this.playerManager.abilityEnabled) 
+			this.StartCoroutine (this.Shoot ());
 	}
 
     private IEnumerator Shoot()
@@ -27,11 +27,10 @@ public class ShootAbility : MonoBehaviour {
         this.playerManager.abilityEnabled = false;
 
         // Get the orientation of the player to determine the direction in which the bullet will shoot.
-        short orientation = this.GetComponent<SpriteOrientationController>().lastOrientation;
-        
-        Vector3 bulletSpawnPosition = this.playerTransform.position + Vector3.right * orientation;
+ 
+		Vector3 bulletSpawnPosition = SpawnLocation();
         Bullet newBullet = Object.Instantiate(bulletPrefab, bulletSpawnPosition, this.playerTransform.rotation) as Bullet;
-        newBullet.speed = speed * orientation;
+		newBullet.speed = speed * Mathf.Sign(playerTransform.localScale.x);
 
         // Destroy the bullet in timeDelete time.
         Object.Destroy(newBullet.gameObject, timeDelete);
@@ -40,4 +39,15 @@ public class ShootAbility : MonoBehaviour {
         yield return new WaitForSeconds(this.timeBetweenShots);
         this.playerManager.abilityEnabled = true;
     }
+
+	private Vector3 SpawnLocation()
+	{
+		if (playerManager.GetAxis ("Ability") > 0) {
+			this.playerTransform.localScale = new Vector3 (Mathf.Abs (playerTransform.localScale.x), playerTransform.localScale.y, playerTransform.localScale.z);
+		} else {
+			this.playerTransform.localScale = new Vector3 (-Mathf.Abs (playerTransform.localScale.x), playerTransform.localScale.y, playerTransform.localScale.z);
+		}
+		return this.playerTransform.position + Vector3.right * Mathf.Sign(playerTransform.localScale.x);
+	}
+		
 }
