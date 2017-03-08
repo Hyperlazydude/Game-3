@@ -1,41 +1,43 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ShootAbility : MonoBehaviour {
-	public string fireName;
-	public Bullet bullet;
-	public float speed;
+    
+	public Bullet bulletPrefab;
+
+    public float speed;
 	public float timeDelete;
 	public float timeBetweenShots;
-	public Transform point;
 
-	private float current;
-	// Use this for initialization
-	void Awake () {
-		current = timeBetweenShots;
-		timeBetweenShots = 0;
+    private Transform playerTransform;
+    private PlayerManager playerManager;
+    
+	private void Awake () {
+        this.playerTransform = this.GetComponent<Transform>();
+        this.playerManager = this.GetComponent<PlayerManager>();
 	}
-	void Start () {
+	
+	private void Update () {
+        if (this.playerManager.GetButtonDown("Ability") && this.playerManager.abilityEnabled)
+            this.StartCoroutine(this.Shoot());
 	}
-	// Update is called once per frame
-	void Update () {
-		if (Input.GetAxis(fireName) == 1) {
-			timeBetweenShots -= Time.deltaTime;
-			if (timeBetweenShots <= 0) {
-				timeBetweenShots = current;
 
-                short orientation = this.GetComponent<SpriteOrientationController>().lastOrientation;
+    private IEnumerator Shoot()
+    {
+        this.playerManager.abilityEnabled = false;
 
-                Vector3 position = point.position;
-                position.x += orientation;
-                Bullet newBullet = Instantiate (bullet, position, point.rotation) as Bullet;
+        // Get the orientation of the player to determine the direction in which the bullet will shoot.
+        short orientation = this.GetComponent<SpriteOrientationController>().lastOrientation;
+        
+        Vector3 bulletSpawnPosition = this.playerTransform.position + Vector3.right * orientation;
+        Bullet newBullet = Object.Instantiate(bulletPrefab, bulletSpawnPosition, this.playerTransform.rotation) as Bullet;
+        newBullet.speed = speed * orientation;
 
-                newBullet.speed = speed * orientation;
-				Destroy (newBullet.gameObject, timeDelete);
-			}
-		} else {
-			timeBetweenShots -= Time.deltaTime;
-		}
-	}
+        // Destroy the bullet in timeDelete time.
+        Object.Destroy(newBullet.gameObject, timeDelete);
+
+        // Re-enable shooting after timeBetweenShots seconds.
+        yield return new WaitForSeconds(this.timeBetweenShots);
+        this.playerManager.abilityEnabled = true;
+    }
 }

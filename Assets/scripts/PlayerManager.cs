@@ -10,8 +10,19 @@ public class PlayerManager : MonoBehaviour
     [HideInInspector]
     public bool abilityEnabled;
 
+    private void Awake()
+    {
+        this.movementEnabled = true;
+        this.abilityEnabled = true;
+    }
+
     public bool GetButtonDown(string button)
     {
         return Input.GetButtonDown(button + this.playerNumber);
+    }
+
+    public float GetAxis(string axis)
+    {
+        return Input.GetAxis(axis + this.playerNumber);
     }
 }

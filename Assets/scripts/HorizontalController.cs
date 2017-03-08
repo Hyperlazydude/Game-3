@@ -2,25 +2,27 @@ using UnityEngine;
 
 public class HorizontalController : MonoBehaviour
 {
-
-    public string horizontalAxisName;
-
     public float maxSpeed;
     public float acceleration;
 
-    protected Rigidbody2D playerRB;
-
-    protected virtual void Awake()
+    private Rigidbody2D playerRB;
+    private PlayerManager playerManager;
+    
+    private void Awake()
     {
         this.playerRB = this.GetComponent<Rigidbody2D>();
+        this.playerManager = this.GetComponent<PlayerManager>();
     }
 
-    protected virtual void FixedUpdate()
+    private void FixedUpdate()
     {
-        float horizontal = Input.GetAxis(this.horizontalAxisName);
-        this.playerRB.AddForce(Vector2.right * this.acceleration * horizontal);
+        if (this.playerManager.movementEnabled)
+        {
+            float horizontal = this.playerManager.GetAxis("Horizontal");
+            this.playerRB.AddForce(Vector2.right * this.acceleration * horizontal);
 
-        if (Mathf.Abs(this.playerRB.velocity.x) >= this.maxSpeed)
-            this.playerRB.velocity = new Vector2(this.maxSpeed * horizontal, this.playerRB.velocity.y);   
+            if (Mathf.Abs(this.playerRB.velocity.x) >= this.maxSpeed)
+                this.playerRB.velocity = new Vector2(this.maxSpeed * horizontal, this.playerRB.velocity.y);
+        }
     }
 }
