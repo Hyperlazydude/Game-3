@@ -13,7 +13,7 @@ public class Bullet : MonoBehaviour {
         Vulnerability vulnerability = collision.gameObject.GetComponent<Vulnerability>();
         if (vulnerability != null && vulnerability.IsVulnerable) {
             vulnerability.MakeInvulnerable();
-            Object.Destroy(this.gameObject);
         }
+		Object.Destroy(this.gameObject);
     }
 }
