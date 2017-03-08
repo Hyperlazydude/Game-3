@@ -1,7 +1,38 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 public static class CollisionUtilities
 {
+
+    public enum CollisionPosition
+    {
+        TOP,
+        BOTTOM,
+        LEFT,
+        RIGHT
+    }
+
+    public static CollisionPosition GetCollisionPosition(Collision2D collision)
+    {
+        ContactPoint2D[] contacts = collision.contacts;
+
+        Vector2 point1 = contacts.FirstOrDefault().point;
+        Vector2 point2 = contacts.LastOrDefault().point;
+
+        Bounds otherColliderBounds = collision.collider.bounds;
+        float ignore, maxPoint;
+
+        if (point1.x == point2.x)
+        {
+            CollisionUtilities.GetBoundsXLimits(otherColliderBounds, out ignore, out maxPoint);
+            return Mathf.Abs(maxPoint - point1.x) <= 0.05 ? CollisionPosition.LEFT : CollisionPosition.RIGHT;
+        }
+
+        CollisionUtilities.GetBoundsYLimits(otherColliderBounds, out ignore, out maxPoint);
+        return Mathf.Abs(maxPoint - point1.y) <= 0.05 ? CollisionPosition.BOTTOM : CollisionPosition.TOP;
+
+    }
+
     public static bool FullyContactingPlatform (Bounds platform, Bounds inner)
     {
         float outerMin, outerMax;

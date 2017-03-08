@@ -1,13 +1,11 @@
-﻿using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class JumpController : MonoBehaviour
 {
-    
-    public string jumpButtonName;
-    public float jumpForce;
+    public float jumpVelocity;
 
     private Rigidbody2D playerRB;
+    private PlayerManager playerManager;
 
     protected virtual int AllowedJumps
     {
@@ -20,6 +18,7 @@ public class JumpController : MonoBehaviour
     protected virtual void Awake()
     {
         this.playerRB = this.GetComponent<Rigidbody2D>();
+        this.playerManager = this.GetComponent<PlayerManager>();
 
         this.numJumps = 0;
         this.jumpPressed = false;
@@ -27,15 +26,15 @@ public class JumpController : MonoBehaviour
 
     protected virtual void Update()
     {
-        this.jumpPressed = Input.GetButtonDown(this.jumpButtonName);
+        this.jumpPressed = this.playerManager.GetButtonDown("Jump");
     }
 
     protected virtual void FixedUpdate()
     {
-        if (this.jumpPressed && this.numJumps < this.AllowedJumps)
+        if (this.playerManager.movementEnabled && this.jumpPressed && this.numJumps < this.AllowedJumps)
         {
             this.numJumps++;
-            this.playerRB.AddForce(jumpForce * Vector2.up * Time.deltaTime);
+            this.playerRB.velocity += Vector2.up * this.jumpVelocity;
             this.jumpPressed = false;
         }
     }
@@ -46,12 +45,9 @@ public class JumpController : MonoBehaviour
         {
             case "Platform":
             case "Player":
-                if (collision.gameObject.CompareTag("Platform") || collision.gameObject.CompareTag("Player"))
-                    this.numJumps = 0;
-                break;
-            
+                this.numJumps = 0;
+                break;    
         }
-        
     }
 
     protected void OnCollisionExit2D(Collision2D collision)
@@ -60,8 +56,7 @@ public class JumpController : MonoBehaviour
         {
             case "Platform":
             case "Player":
-                if (collision.gameObject.CompareTag("Platform") || collision.gameObject.CompareTag("Player"))
-                    this.numJumps = 1;
+                this.numJumps = 1;
                 break;
 
         }
