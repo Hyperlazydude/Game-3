@@ -5,12 +5,10 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
 	public Player playerCharacter;
 	public GameObject playerPrefab;
-
-	public GameObject player1;
-	public GameObject player2;
-
 	public Camera mainCamera;
 
+	[HideInInspector]
+	public GameObject player1, player2;
 
 	// Use this for initialization
 	private void Awake () {
