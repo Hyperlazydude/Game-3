@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour {
 		//Create Players
 		player1 = Instantiate (playerPrefab, new Vector3(-9,2.5f,0), playerPrefab.transform.rotation);
 		player2 = Instantiate (playerPrefab, new Vector3(9,2.5f,0), playerPrefab.transform.rotation);
+		player1.name = "Player 1";
+		player2.name = "Player 2";
 
 		//Set the player 2 controler
 		player2.GetComponent<PlayerManager> ().playerNumber = 2;
