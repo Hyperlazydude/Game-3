@@ -37,8 +37,12 @@ public class RespawnController : MonoBehaviour
     {
         if (this.respawn)
         {
-            this.StartCoroutine(this.Respawn());
+            //this.StartCoroutine(this.Respawn());
 
+            this.playerTransform.position = this.lastPosition;
+            this.playerRB.velocity = new Vector2();
+
+            this.GetComponent<Stun>().MakeInvulnerable();
             this.respawn = false; 
         }
     }
@@ -48,8 +52,18 @@ public class RespawnController : MonoBehaviour
         if (
             collision.gameObject.CompareTag("Platform") && 
             CollisionUtilities.FullyContactingPlatform(collision.collider.bounds, this.playerCollider.bounds)
-        )
+        ) {
+            float enemyY, ignore;
+
+        CollisionUtilities.GetBoundsYLimits(collision.collider.bounds, out ignore, out enemyY);
+
+        ContactPoint2D[] contacts = collision.contacts;
+        float firstContactY = contacts.First().point.y;
+        float lastContactY = contacts.Last().point.y;
+
+        if (Mathf.Abs(firstContactY - enemyY) < 0.05 && Mathf.Abs(lastContactY - enemyY) < 0.05)
             this.lastPosition = this.transform.position;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -60,13 +74,14 @@ public class RespawnController : MonoBehaviour
 
     private IEnumerator Respawn()
     {
-        this.playerTransform.position = this.lastPosition;
-        this.playerRB.velocity = new Vector2();
 
-        this.movement.enabled = false;
-        this.jumping.enabled = false;
+        ////this.playerTransform.position = this.lastPosition;
+        ////this.playerRB.velocity = new Vector2();
+
+        ////this.movement.enabled = false;
+        ////this.jumping.enabled = false;
         
-        this.material.color *= new Vector4(1, 1, 1, 0.5f);
+        ////this.material.color *= new Vector4(1, 1, 1, 0.5f);
 
         yield return new WaitForSeconds(this.respawnGhostTime);
 

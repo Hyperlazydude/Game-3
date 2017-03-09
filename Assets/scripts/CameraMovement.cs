@@ -5,14 +5,15 @@ using UnityEngine;
 public class CameraMovement : MonoBehaviour {
 	public float buffer;
 
-	private Transform player1;
-	private Transform player2;
+	public Transform player1;
+	public  Transform player2;
 	private Vector3 midpoint;
-	// Use this for initialization
-	private void Awake () {
-		player1 = GameObject.FindGameObjectWithTag ("Player 1").transform;
-		player2 = GameObject.FindGameObjectWithTag ("Player 2").transform;
-	}
+	
+    // Use this for initialization
+	//private void Awake () {
+	//	player1 = GameObject.FindGameObjectWithTag ("Player 1").transform;
+	//	player2 = GameObject.FindGameObjectWithTag ("Player 2").transform;
+	//}
 	void Start () {
 		
 	}
