@@ -13,7 +13,7 @@ public class JumpController : MonoBehaviour
     }
 
     private int numJumps;
-    private bool jumpPressed;
+    private bool jumpQueued;
 
     protected virtual void Awake()
     {
@@ -21,21 +21,22 @@ public class JumpController : MonoBehaviour
         this.playerManager = this.GetComponent<PlayerManager>();
 
         this.numJumps = 0;
-        this.jumpPressed = false;
+        this.jumpQueued = false;
     }
 
     protected virtual void Update()
     {
-        this.jumpPressed = this.playerManager.GetButtonDown("Jump");
+        if (this.playerManager.movementEnabled && this.playerManager.GetButtonDown("Jump") && this.numJumps < this.AllowedJumps) 
+            this.jumpQueued = true;
     }
 
     protected virtual void FixedUpdate()
     {
-        if (this.playerManager.movementEnabled && this.jumpPressed && this.numJumps < this.AllowedJumps)
+        if (this.jumpQueued)
         {
             this.numJumps++;
             this.playerRB.velocity += Vector2.up * this.jumpVelocity;
-            this.jumpPressed = false;
+            this.jumpQueued = false;
         }
     }
 
