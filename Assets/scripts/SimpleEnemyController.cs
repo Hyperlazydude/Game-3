@@ -3,17 +3,15 @@
 public class SimpleEnemyController : MonoBehaviour {
     
     public float enemySpeed;
-
-    private bool Attached
-    {
-        get { return this.platformCollider != null; }
-    }
+    public float dropOutVelocity;
 
     private Rigidbody2D enemyRB;
+    private Vector3 enemyOffset;
     private Collider2D enemyCollider;
     private Collider2D platformCollider;
-
+    
     private int direction;
+    private bool dead;
     
     private void Awake()
     {
@@ -22,15 +20,23 @@ public class SimpleEnemyController : MonoBehaviour {
         this.platformCollider = null;
 
         this.direction = 1;
+        this.dead = false;
     }
 
     private void FixedUpdate()
     {
-        if (this.Attached)
+        if (this.platformCollider != null)
         {
             if (!CollisionUtilities.FullyContactingPlatform(this.platformCollider.bounds, this.enemyCollider.bounds))
                 this.direction *= -1;
-            this.enemyRB.velocity = Vector2.right * this.enemySpeed * this.direction;
+
+            this.enemyOffset += Vector3.right * this.direction * Time.deltaTime;
+            this.enemyRB.position = this.platformCollider.bounds.center + this.enemyOffset;
+        } else if (this.dead)
+        {
+            Vector3 positionInViewport = Camera.main.WorldToViewportPoint(this.enemyRB.position);
+            if (!new Rect(0, 0, 1, 1).Contains(positionInViewport))
+                Object.Destroy(this.gameObject);
         }
     }
 
@@ -38,7 +44,11 @@ public class SimpleEnemyController : MonoBehaviour {
     {
         // First contact with platform.
         if (collision.collider.CompareTag("Platform"))
+        {
             this.platformCollider = collision.collider;
+            this.enemyOffset = (Vector3) this.enemyRB.position - this.platformCollider.bounds.center;
+        }
+            
         else if (collision.collider.CompareTag("Player"))
             switch (CollisionUtilities.GetCollisionPosition(collision))
             {
@@ -61,7 +71,11 @@ public class SimpleEnemyController : MonoBehaviour {
         Rigidbody2D playerRB = player.GetComponent<Rigidbody2D>();
 
         playerRB.velocity += jumpController.jumpVelocity * Vector2.up;
-        Object.Destroy(this.gameObject);
+
+        this.enemyRB.velocity += Vector2.up * this.dropOutVelocity;
+        this.enemyCollider.isTrigger = true;
+        this.platformCollider = null;
+        this.dead = true;
     }
 
     private void StunPlayer(GameObject player)
@@ -71,5 +85,4 @@ public class SimpleEnemyController : MonoBehaviour {
         if (vulnerablility.IsVulnerable)
             vulnerablility.MakeInvulnerable();
     }
-
 }
