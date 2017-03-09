@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour {
 			player1.GetComponent<ShootAbility> ().enabled = true;
 			break;
 		case "Jumper":
+            player1.GetComponent<JumpController>().enabled = false;
 			player1.GetComponent<DoubleJumpController> ().enabled = true;
 			break;
 		case "Bomber":
@@ -36,7 +37,8 @@ public class GameManager : MonoBehaviour {
 			player2.GetComponent<ShootAbility> ().enabled = true;
 			break;
 		case "Jumper":
-			player2.GetComponent<DoubleJumpController> ().enabled = true;
+            player2.GetComponent<JumpController>().enabled = false;
+            player2.GetComponent<DoubleJumpController> ().enabled = true;
 			break;
 		case "Bomber":
 			player2.GetComponent<BombAbility> ().enabled = true;
