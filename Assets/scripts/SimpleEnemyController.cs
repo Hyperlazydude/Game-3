@@ -1,74 +1,58 @@
-﻿using System.Linq;
-using UnityEngine;
-using System.Collections;
+﻿using UnityEngine;
 
 public class SimpleEnemyController : MonoBehaviour {
-
-    public float stunSeconds;
+    
     public float enemySpeed;
 
     private bool Attached
     {
-        get { return this.platformBounds != null; }
+        get { return this.platformCollider != null; }
     }
 
     private Rigidbody2D enemyRB;
     private Collider2D enemyCollider;
+    private Collider2D platformCollider;
 
-    private Bounds platformBounds;
-    private Vector3 localTransform;
-
-    private bool direction;
+    private int direction;
     
     private void Awake()
     {
         this.enemyRB = this.GetComponent<Rigidbody2D>();
         this.enemyCollider = this.GetComponent<Collider2D>();
+        this.platformCollider = null;
 
-        this.localTransform = new Vector2();
-
-        this.direction = true;
+        this.direction = 1;
     }
 
     private void FixedUpdate()
     {
         if (this.Attached)
         {
-            
-            //velocity.x = this.enemySpeed * (this.direction ? 1 : -1);
+            if (!CollisionUtilities.FullyContactingPlatform(this.platformCollider.bounds, this.enemyCollider.bounds))
+                this.direction *= -1;
+            this.enemyRB.velocity = Vector2.right * this.enemySpeed * this.direction;
         }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Enemy hits platform for first time.
-        if (this.Attached && collision.collider.CompareTag("Platform"))
-            this.AttachToPlatform(collision.collider);
+        // First contact with platform.
+        if (collision.collider.CompareTag("Platform"))
+            this.platformCollider = collision.collider;
         else if (collision.collider.CompareTag("Player"))
-        {
-            float enemyY, ignore;
+            switch (CollisionUtilities.GetCollisionPosition(collision))
+            {
+                // Player hit the enemy on the top of the enemy's collision box.
+                case CollisionUtilities.CollisionPosition.TOP:
+                    this.PlayerJumpOnHead(collision.gameObject);
+                    break;
 
-            CollisionUtilities.GetBoundsYLimits(this.enemyCollider.bounds, out ignore, out enemyY);
-
-            ContactPoint2D[] contacts = collision.contacts;
-            float firstContactY = contacts.First().point.y;
-            float lastContactY = contacts.Last().point.y;
-
-            // Player hit the enemy on the top of the enemy's collision box.
-            if (Mathf.Abs(firstContactY - enemyY) < 0.05 && Mathf.Abs(lastContactY - enemyY) < 0.05)
-                this.PlayerJumpOnHead(collision.gameObject);
-
-            // Player hit on side.
-            else
-                this.StartCoroutine(this.StunPlayer(collision.gameObject, this.stunSeconds));
-        }
-
-    }
-    
-    private void AttachToPlatform(Collider2D platformCollider)
-    {
-        this.platformBounds = platformCollider.bounds;
-        this.localTransform = this.enemyCollider.bounds.center - this.platformBounds.center;
+                // Player hit on side.
+                case CollisionUtilities.CollisionPosition.LEFT:
+                case CollisionUtilities.CollisionPosition.RIGHT:
+                    this.StunPlayer(collision.gameObject);
+                    break;
+            }
     }
 
     private void PlayerJumpOnHead(GameObject player)
@@ -76,22 +60,16 @@ public class SimpleEnemyController : MonoBehaviour {
         JumpController jumpController = player.GetComponent<JumpController>();
         Rigidbody2D playerRB = player.GetComponent<Rigidbody2D>();
 
-        playerRB.AddForce(jumpController.jumpVelocity * Vector2.up * Time.deltaTime);
+        playerRB.velocity += jumpController.jumpVelocity * Vector2.up;
         Object.Destroy(this.gameObject);
     }
 
-    private IEnumerator StunPlayer(GameObject player, float seconds)
+    private void StunPlayer(GameObject player)
     {
         Vulnerability vulnerablility = player.GetComponent<Vulnerability>();
-        Collider2D playerCollider = player.GetComponent<Collider2D>();
 
         if (vulnerablility.IsVulnerable)
-        {
             vulnerablility.MakeInvulnerable();
-            Physics2D.IgnoreCollision(playerCollider, this.enemyCollider);
-            yield return new WaitForSeconds(seconds);
-            Physics2D.IgnoreCollision(playerCollider, this.enemyCollider, false);
-        }
     }
 
 }
