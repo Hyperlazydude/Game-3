@@ -2,17 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class Character : MonoBehaviour {
 
 	public Player player;
 
 	private Dropdown characterSelection;
-
+	private Dropdown newList;
 	// Use this for initialization
 
 	private void Awake() {
 		characterSelection = GetComponent<Dropdown> ();
+		characterSelection.onValueChanged.AddListener (delegate {deleteSelect();});
+	}
+
+	public void deleteSelect () {
+		if (characterSelection.options [0].text == "Select One...") {
+			characterSelection.options.RemoveAt (0);
+			characterSelection.value--;
+		}
 	}
 
 	public void SetPlayer1(int optionSelected) {
