@@ -8,14 +8,17 @@ public class GameManager : MonoBehaviour {
 	public Camera mainCamera;
 	public GameObject countDown;
 
+	public Vector3 player1Spawn;
+	public Vector3 player2Spawn;
+
 	[HideInInspector]
 	public GameObject player1, player2;
 
 	// Use this for initialization
 	private void Awake () {
 		//Create Players
-		player1 = Instantiate (playerPrefab, new Vector3(-9,2.5f,0), playerPrefab.transform.rotation);
-		player2 = Instantiate (playerPrefab, new Vector3(9,2.5f,0), playerPrefab.transform.rotation);
+		player1 = Instantiate (playerPrefab, player1Spawn, playerPrefab.transform.rotation);
+		player2 = Instantiate (playerPrefab, player2Spawn, playerPrefab.transform.rotation);
 		player1.name = "Player 1";
 		player2.name = "Player 2";
 
