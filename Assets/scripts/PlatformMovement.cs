@@ -28,4 +28,22 @@ public class PlatformMovement : MonoBehaviour {
 			move = dest;
 		}
 	}
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        switch (collision.gameObject.tag)
+        {
+            case "Player":
+            case "Enemy":
+                if (CollisionUtilities.GetCollisionPosition(collision) == CollisionUtilities.CollisionPosition.TOP)
+                    collision.transform.parent = this.transform;
+                break;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+            collision.transform.parent = null;
+    }
 }
