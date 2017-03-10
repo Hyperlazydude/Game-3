@@ -38,15 +38,15 @@ public class RespawnController : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (
-            collision.gameObject.CompareTag("Platform") &&
-            CollisionUtilities.GetCollisionPosition(collision) == CollisionUtilities.CollisionPosition.BOTTOM &&
-            CollisionUtilities.FullyContactingPlatform(collision.collider.bounds, this.playerCollider.bounds)
-        )
-            this.lastPlatformCollider = collision.collider;
-    }
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    if (
+    //        collision.gameObject.CompareTag("Platform") &&
+    //        CollisionUtilities.GetCollisionPosition(collision) == CollisionUtilities.CollisionPosition.BOTTOM &&
+    //        CollisionUtilities.FullyContactingPlatform(collision.collider.bounds, this.playerCollider.bounds)
+    //    )
+    //        this.lastPlatformCollider = collision.collider;
+    //}
 
     private void OnCollisionStay2D(Collision2D collision)
     {
@@ -55,7 +55,11 @@ public class RespawnController : MonoBehaviour
             CollisionUtilities.GetCollisionPosition(collision) == CollisionUtilities.CollisionPosition.BOTTOM &&
             CollisionUtilities.FullyContactingPlatform(collision.collider.bounds, this.playerCollider.bounds)
         )
+        {
+            if (collision.collider != this.lastPlatformCollider)
+                this.lastPlatformCollider = collision.collider;
             this.lastOffset = this.transform.position - this.lastPlatformCollider.bounds.center;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

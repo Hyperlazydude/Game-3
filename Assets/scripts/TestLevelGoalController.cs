@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class TestLevelGoalController : MonoBehaviour {
 
     public Text fullscreenText;
+    public string scene;
 
     private bool triggered;
 
@@ -28,6 +29,6 @@ public class TestLevelGoalController : MonoBehaviour {
     private IEnumerator GoalHit()
     {
         yield return new WaitForSeconds(2);
-        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
+        SceneManager.LoadSceneAsync(scene);
     }
 }

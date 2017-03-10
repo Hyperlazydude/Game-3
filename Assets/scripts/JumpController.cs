@@ -35,7 +35,12 @@ public class JumpController : MonoBehaviour
         if (this.jumpQueued)
         {
             this.numJumps++;
-            this.playerRB.velocity += Vector2.up * this.jumpVelocity;
+
+            Vector2 velocity = this.playerRB.velocity;
+            if (velocity.y < 0)
+                this.playerRB.velocity = new Vector2(velocity.x, this.jumpVelocity);
+            else 
+                this.playerRB.velocity += Vector2.up * this.jumpVelocity;
             this.jumpQueued = false;
         }
     }
