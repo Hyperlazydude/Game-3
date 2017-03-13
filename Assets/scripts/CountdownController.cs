@@ -8,12 +8,7 @@ public class CountdownController : MonoBehaviour {
     public HorizontalController player1Control;
     public HorizontalController player2Control;
 
-    private Text fullscreenText;
-
-    private void Awake()
-    {
-        this.fullscreenText = this.GetComponent<Text>();
-    }
+    public Text countdownText;
 
     private void Start ()
     {
@@ -27,15 +22,14 @@ public class CountdownController : MonoBehaviour {
 
         for (int i = 3; i > 0; i--)
         {
-            this.fullscreenText.text = i.ToString();
+            this.countdownText.text = i.ToString();
             yield return new WaitForSeconds(1);
         }
 
-        this.fullscreenText.text = "";
+        this.countdownText.text = "";
+        this.gameObject.SetActive(false);
 
         this.player1Control.enabled = true;
         this.player2Control.enabled = true;
-
-
     }
 }

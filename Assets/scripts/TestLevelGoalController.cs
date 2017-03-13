@@ -1,12 +1,11 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TestLevelGoalController : MonoBehaviour {
 
-    public Text fullscreenText;
+    public FinishController finishController;
     public string scene;
 
     private bool triggered;
@@ -21,7 +20,8 @@ public class TestLevelGoalController : MonoBehaviour {
         if (!this.triggered)
         {
             this.triggered = false;
-            this.fullscreenText.text = collision.gameObject.name + " won";
+            this.finishController.finishText.text = collision.gameObject.name + " won!";
+            this.finishController.gameObject.SetActive(true);
             this.StartCoroutine(this.GoalHit());
         }
     }
