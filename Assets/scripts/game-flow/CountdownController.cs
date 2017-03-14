@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class CountdownController : MonoBehaviour {
 
-    public HorizontalController player1Control;
-    public HorizontalController player2Control;
+    public HorizontalMovement player1Control;
+    public HorizontalMovement player2Control;
 
     public Text countdownText;
 

@@ -5,7 +5,7 @@ public class JumpController : MonoBehaviour
     public float jumpVelocity;
 
     private Rigidbody2D playerRB;
-    private PlayerManager playerManager;
+    private Player player;
 
     protected virtual int AllowedJumps
     {
@@ -18,7 +18,7 @@ public class JumpController : MonoBehaviour
     protected virtual void Awake()
     {
         this.playerRB = this.GetComponent<Rigidbody2D>();
-        this.playerManager = this.GetComponent<PlayerManager>();
+        this.player = this.GetComponent<Player>();
 
         this.numJumps = 0;
         this.jumpQueued = false;
@@ -26,7 +26,7 @@ public class JumpController : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (this.playerManager.movementEnabled && this.playerManager.GetButtonDown("Jump") && this.numJumps < this.AllowedJumps) 
+        if (this.player.movementEnabled && this.player.GetButtonDown("Jump") && this.numJumps < this.AllowedJumps) 
             this.jumpQueued = true;
     }
 

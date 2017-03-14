@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour {
 
 		//Set up the Count Down
 		CountdownController counter = countDown.GetComponent<CountdownController>();
-		counter.player1Control = player1.GetComponent<HorizontalController> ();
-		counter.player2Control = player2.GetComponent<HorizontalController> ();
+		counter.player1Control = player1.GetComponent<HorizontalMovement> ();
+		counter.player2Control = player2.GetComponent<HorizontalMovement> ();
 	}
 }

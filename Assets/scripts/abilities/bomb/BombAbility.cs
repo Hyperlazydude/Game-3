@@ -5,46 +5,35 @@ public class BombAbility : MonoBehaviour {
 	public Bomb bombPrefab;
 	public float bombTime;
 
-	private PlayerManager playerManager;
+	private Player player;
 	private Transform playerTransform;
+    private Orientation playerOrientation;
 
 	private void Awake () {
-		this.playerManager = this.GetComponent<PlayerManager> ();
+		this.player = this.GetComponent<Player> ();
 		this.playerTransform = this.GetComponent<Transform>();
+        this.playerOrientation = this.GetComponent<Orientation>(); 
 	}
-
-	// Use this for initialization
-	void Start () {
-	}
-	
-	// Update is called once per frame
+    
 	private void Update () {
-		if (this.playerManager.GetButtonDown ("Ability") && this.playerManager.abilityEnabled) 
-			this.StartCoroutine (this.PlaceBomb ());
+		if (this.player.GetButtonDown ("Ability") && this.player.abilityEnabled) 
+			this.StartCoroutine (this.PlaceBomb());
 	}
 
 	private IEnumerator PlaceBomb()
 	{
-		this.playerManager.abilityEnabled = false;
+		this.player.abilityEnabled = false;
 
-		Vector3 spawnPosition = SpawnLocation();
+        float abilityDirection = this.player.GetAxis("Ability");
+        this.playerOrientation.SetOrientation(abilityDirection);
+        short abilityOrientation = this.playerOrientation.LastOrientation;
+
+        Vector3 spawnPosition = this.playerTransform.position + Vector3.right * abilityOrientation; 
 		Bomb newBomb = Object.Instantiate(bombPrefab, spawnPosition, this.playerTransform.rotation) as Bomb;
 		newBomb.detonationTime = bombTime;
-
-		//Destroy the bullet in timeDelete time.
-
-		//Re-enable shooting after timeBetweenShots seconds.
+        
 		yield return new WaitForSeconds(this.bombTime);
-		this.playerManager.abilityEnabled = true;
+		this.player.abilityEnabled = true;
 	}
-
-	private Vector3 SpawnLocation()
-	{
-		if (playerManager.GetAxis ("Ability") > 0) {
-			this.playerTransform.localScale = new Vector3 (Mathf.Abs (playerTransform.localScale.x), playerTransform.localScale.y, playerTransform.localScale.z);
-		} else {
-			this.playerTransform.localScale = new Vector3 (-Mathf.Abs (playerTransform.localScale.x), playerTransform.localScale.y, playerTransform.localScale.z);
-		}
-		return this.playerTransform.position + Vector3.right * Mathf.Sign(playerTransform.localScale.x);
-	}
+    
 }

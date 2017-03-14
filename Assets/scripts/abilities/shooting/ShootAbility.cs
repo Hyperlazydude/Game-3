@@ -10,44 +10,39 @@ public class ShootAbility : MonoBehaviour {
 	public float timeBetweenShots;
 
     private Transform playerTransform;
-    private PlayerManager playerManager;
+    private Player player;
+    private Orientation playerOrientation;
     
 	private void Awake () {
         this.playerTransform = this.GetComponent<Transform>();
-        this.playerManager = this.GetComponent<PlayerManager>();
+        this.player = this.GetComponent<Player>();
+        this.playerOrientation = this.GetComponent<Orientation>();
 	}
 	
 	private void Update () {
-		if (this.playerManager.GetButtonDown ("Ability") && this.playerManager.abilityEnabled) 
+		if (this.player.GetButtonDown ("Ability") && this.player.abilityEnabled) 
 			this.StartCoroutine (this.Shoot ());
 	}
 
     private IEnumerator Shoot()
     {
-        this.playerManager.abilityEnabled = false;
+        this.player.abilityEnabled = false;
 
         // Get the orientation of the player to determine the direction in which the bullet will shoot.
- 
-		Vector3 bulletSpawnPosition = SpawnLocation();
+        float shotButtonPushed = this.player.GetAxis("Ability");
+        this.playerOrientation.SetOrientation(shotButtonPushed);
+        short shotDirection = this.playerOrientation.LastOrientation;
+        
+        Vector3 bulletSpawnPosition = this.playerTransform.position + Vector3.right * shotDirection;
         Bullet newBullet = Object.Instantiate(bulletPrefab, bulletSpawnPosition, this.playerTransform.rotation) as Bullet;
-		newBullet.speed = speed * Mathf.Sign(playerTransform.localScale.x);
+		newBullet.speed = speed * shotDirection;
 
         // Destroy the bullet in timeDelete time.
         Object.Destroy(newBullet.gameObject, timeDelete);
 
         // Re-enable shooting after timeBetweenShots seconds.
         yield return new WaitForSeconds(this.timeBetweenShots);
-        this.playerManager.abilityEnabled = true;
+        this.player.abilityEnabled = true;
     }
-
-	private Vector3 SpawnLocation()
-	{
-		if (playerManager.GetAxis ("Ability") > 0) {
-			this.playerTransform.localScale = new Vector3 (Mathf.Abs (playerTransform.localScale.x), playerTransform.localScale.y, playerTransform.localScale.z);
-		} else {
-			this.playerTransform.localScale = new Vector3 (-Mathf.Abs (playerTransform.localScale.x), playerTransform.localScale.y, playerTransform.localScale.z);
-		}
-		return this.playerTransform.position + Vector3.right * Mathf.Sign(playerTransform.localScale.x);
-	}
 		
 }

@@ -5,8 +5,7 @@ using UnityEngine;
 public class RespawnController : MonoBehaviour
 {
     public float respawnGhostTime;
-
-    private PlayerManager playerManager;
+    
     private Collider2D playerCollider;
     private Rigidbody2D playerRB;
 
@@ -37,17 +36,7 @@ public class RespawnController : MonoBehaviour
             this.respawn = false; 
         }
     }
-
-    //private void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //    if (
-    //        collision.gameObject.CompareTag("Platform") &&
-    //        CollisionUtilities.GetCollisionPosition(collision) == CollisionUtilities.CollisionPosition.BOTTOM &&
-    //        CollisionUtilities.FullyContactingPlatform(collision.collider.bounds, this.playerCollider.bounds)
-    //    )
-    //        this.lastPlatformCollider = collision.collider;
-    //}
-
+    
     private void OnCollisionStay2D(Collision2D collision)
     {
         if (
