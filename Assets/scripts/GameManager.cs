@@ -19,8 +19,8 @@ public class GameManager : MonoBehaviour {
 		//Create Players
 		player1 = Instantiate (playerPrefab, player1Spawn, playerPrefab.transform.rotation);
 		player2 = Instantiate (playerPrefab, player2Spawn, playerPrefab.transform.rotation);
-		player1.name = "Player 1";
-		player2.name = "Player 2";
+		player1.name = playerCharacter.player1Name;
+		player2.name = playerCharacter.player2Name;
 
 		//Set the player 2 controler
 		player2.GetComponent<PlayerManager> ().playerNumber = 2;
@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour {
 		movement.player2 = player2.transform;
 
 		//Set the players' character
-		switch (playerCharacter.player1Name) {
+		switch (playerCharacter.player1Char) {
 		case "Gunner":
 			player1.GetComponent<ShootAbility> ().enabled = true;
 			break;
@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour {
 			player1.GetComponent<BombAbility> ().enabled = true;
 			break;
 		}
-		switch (playerCharacter.player2Name) {
+		switch (playerCharacter.player2Char) {
 		case "Gunner":
 			player2.GetComponent<ShootAbility> ().enabled = true;
 			break;

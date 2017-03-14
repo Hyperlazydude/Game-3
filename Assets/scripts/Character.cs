@@ -25,10 +25,11 @@ public class Character : MonoBehaviour {
 	}
 
 	public void SetPlayer1(int optionSelected) {
-		player.player1Name = characterSelection.options [optionSelected].text;
+		player.player1Char = characterSelection.options [optionSelected].text;
 	}
 
 	public void SetPlayer2(int optionSelected) {
-		player.player2Name = characterSelection.options [optionSelected].text;
+		player.player2Char = characterSelection.options [optionSelected].text;
 	}
+		
 }

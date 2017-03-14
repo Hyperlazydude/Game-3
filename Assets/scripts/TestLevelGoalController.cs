@@ -21,6 +21,7 @@ public class TestLevelGoalController : MonoBehaviour {
         {
             this.triggered = false;
             this.finishController.finishText.text = collision.gameObject.name + " won!";
+			PointSystem.Instance.AddPoints (collision.gameObject.name, 50);
             this.finishController.gameObject.SetActive(true);
             this.StartCoroutine(this.GoalHit());
         }
