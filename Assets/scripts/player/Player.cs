@@ -2,6 +2,7 @@
 
 public class Player : MonoBehaviour
 {
+    [HideInInspector]
     public int playerNumber;
 
     [HideInInspector]

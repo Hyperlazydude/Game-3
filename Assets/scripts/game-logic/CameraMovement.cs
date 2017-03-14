@@ -3,31 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraMovement : MonoBehaviour {
-	public float buffer;
 
-	public Transform player1;
-	public  Transform player2;
-	private Vector3 midpoint;
-	
-    // Use this for initialization
-	//private void Awake () {
-	//	player1 = GameObject.FindGameObjectWithTag ("Player 1").transform;
-	//	player2 = GameObject.FindGameObjectWithTag ("Player 2").transform;
-	//}
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		midpoint = CalMidpoint();
-		this.transform.position = midpoint;
-	}
+    private static CameraMovement instance;
+    public static CameraMovement Instance
+    {
+        get { return CameraMovement.instance; }
+    }
 
+    public float buffer;
+    
+	private Transform player1Transform;
+	private Transform player2Transform;
+
+    private Vector3 midpoint;
+
+    private void Awake()
+    {
+        CameraMovement.instance = this;
+    }
+
+    public void SetPlayerTransforms(Transform player1Transform, Transform player2Transform)
+    {
+        this.player1Transform = player1Transform;
+        this.player2Transform = player2Transform;
+    }
+
+	private void Update () {
+        if (this.player1Transform != null && this.player2Transform != null)
+		    this.transform.position = this.CalMidpoint();
+	}
+    
 	private Vector3 CalMidpoint (){
-		float x = (player1.position.x + player2.position.x) / 2;
-		float y = (player1.position.y + player2.position.y) / 2;
-		float z = -Mathf.Sqrt (Mathf.Pow(player1.position.x - player2.position.x, 2) + Mathf.Pow(player1.position.y - player2.position.y, 2)) - buffer;
+		float x = (player1Transform.position.x + player2Transform.position.x) / 2;
+		float y = (player1Transform.position.y + player2Transform.position.y) / 2;
+		float z = -Mathf.Sqrt (Mathf.Pow(player1Transform.position.x - player2Transform.position.x, 2) + Mathf.Pow(player1Transform.position.y - player2Transform.position.y, 2)) - buffer;
 		return new Vector3 (x, y, z);
 	}
 }

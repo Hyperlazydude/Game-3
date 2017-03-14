@@ -17,11 +17,13 @@ public class TestLevelGoalController : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!this.triggered)
+        Player winner = collision.gameObject.GetComponent<Player>();
+        if (!this.triggered && winner != null)
         {
             this.triggered = false;
-            this.finishController.finishText.text = collision.gameObject.name + " won!";
+            this.finishController.finishText.text = PlayerManager.Instance.GetPlayerName(winner.playerNumber) + " won!";
 			PointSystem.Instance.AddPoints (collision.gameObject.name, 50);
+
             this.finishController.gameObject.SetActive(true);
             this.StartCoroutine(this.GoalHit());
         }

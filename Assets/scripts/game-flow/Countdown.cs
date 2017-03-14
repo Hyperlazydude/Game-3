@@ -33,6 +33,7 @@ public class Countdown : MonoBehaviour {
         this.countdownText.text = "";
         this.gameObject.SetActive(false);
 
-        callback.Invoke();
+        if (callback != null)
+            callback.Invoke();
     }
 }

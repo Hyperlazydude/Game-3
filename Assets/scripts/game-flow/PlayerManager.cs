@@ -9,45 +9,80 @@ public class PlayerManager
         SHOOTER
     }
 
-    private static readonly PlayerManager instance = new PlayerManager();
+    
+    private static PlayerManager instance;
     public static PlayerManager Instance
     {
         get { return PlayerManager.instance; }
     }
 
-    private PlayerType player1Type;
-    private PlayerType player2Type;
-
-    private Player player1;
-    public Player Player1
+    public static PlayerManager Instantiate(int numberOfPlayers)
     {
-        get { return this.player1; }
+        return PlayerManager.instance = new PlayerManager(numberOfPlayers);
     }
 
-    private Player player2;
-    public Player Player2
+    private int numberOfPlayers;
+    public int NumberOfPlayers
     {
-        get { return this.player2; }
+        get { return this.numberOfPlayers; }
     }
 
-    private PlayerManager()
+    private readonly PlayerType[] playerTypes;
+    private readonly string[] playerNames;
+    private readonly Player[] players;
+
+    private PlayerManager(int numberOfPlayers)
     {
-        this.player1Type = 0;
-        this.player2Type = 0;
+        this.numberOfPlayers = numberOfPlayers;
+
+        this.playerTypes = new PlayerType[this.numberOfPlayers];
+        this.playerNames = new string[this.numberOfPlayers];
+        this.players = new Player[this.numberOfPlayers];
+    }
+
+    public PlayerType GetPlayerType(int player)
+    {
+        return this.playerTypes[player - 1];
+    }
+
+    public void SetPlayerType(int player, PlayerType playerType)
+    {
+        this.playerTypes[player - 1] = playerType;
+    }
+
+    public string GetPlayerName(int player)
+    {
+        return this.playerNames[player - 1];
+    }
+
+    public void SetPlayerName(int player, string name)
+    {
+        this.playerNames[player - 1] = name;
+    }
+
+    public Player GetPlayer(int player)
+    {
+        return this.players[player - 1];
+    }
+
+    public void SpawnPlayers(Vector3[] spawns)
+    {
+        GameObject prefab;
+        GameObject instance;
+        Player player;
+
+        for (int playerNumber = 0; playerNumber < this.numberOfPlayers; playerNumber++)
+        {
+            prefab = PlayerManager.LoadPlayerTypePrefab(this.playerTypes[playerNumber]);
+            instance = Object.Instantiate(prefab, spawns[playerNumber], Quaternion.identity);
+
+            player = instance.GetComponent<Player>();
+            player.playerNumber = playerNumber + 1;
+            this.players[playerNumber] = player;
+        }
     }
     
-    public void InstantiatePlayers(Vector3 player1Spawn, Vector3 player2Spawn)
-    {
-        GameObject player1Prefab = PlayerManager.LoadPlayerPrefab(this.player1Type);
-        GameObject player1Object = Object.Instantiate(player1Prefab, player1Spawn, Quaternion.identity);
-        this.player1 = player1Object.GetComponent<Player>();
-
-        GameObject player2Prefab = PlayerManager.LoadPlayerPrefab(this.player2Type);
-        GameObject player2Object = Object.Instantiate(player2Prefab, player2Spawn, Quaternion.identity);
-        this.player2 = player2Object.GetComponent<Player>();
-    }
-
-    private static GameObject LoadPlayerPrefab(PlayerType playerType)
+    private static GameObject LoadPlayerTypePrefab(PlayerType playerType)
     {
         string prefabPath;
         switch (playerType)
