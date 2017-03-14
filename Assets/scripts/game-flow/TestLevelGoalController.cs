@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class TestLevelGoalController : MonoBehaviour {
 
-    public FinishController finishController;
+    public Finish finishController;
     public string scene;
 
     private bool triggered;
