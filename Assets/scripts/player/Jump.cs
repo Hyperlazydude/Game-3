@@ -44,7 +44,8 @@ public class Jump : MonoBehaviour
         {
             case "Platform":
             case "Player":
-                this.grounded = true;
+                if (CollisionUtilities.GetCollisionPosition(collision) == CollisionUtilities.CollisionPosition.BOTTOM)
+                    this.grounded = true;
                 break;    
         }
     }

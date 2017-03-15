@@ -3,12 +3,15 @@
 public class LevelFlow : MonoBehaviour
 {
     public Vector3[] spawns;
-    
+
+    private void Awake()
+    {
+        PlayerManager.Instance.SpawnPlayers(this.spawns);
+    }
+
     private void Start()
     {
         PlayerManager playerManager = PlayerManager.Instance;
-
-        playerManager.SpawnPlayers(this.spawns);
 
         Player player1 = playerManager.GetPlayer(1);
         Player player2 = playerManager.GetPlayer(2);

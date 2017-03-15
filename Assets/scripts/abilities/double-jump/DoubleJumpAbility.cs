@@ -5,19 +5,32 @@
     protected override void Awake()
     {
         base.Awake();
+        this.airJumped = false;
         this.player.abilityEnabled = false;
     }
+
     protected override void Update()
     {
+        this.player.abilityEnabled = false;
+
         if (this.grounded)
         {
-            this.player.abilityEnabled = true;
+            this.airJumped = false;
             base.Update();
+            return;
         }
-        else if (this.player.movementEnabled && this.player.abilityEnabled && this.player.GetButtonDown("Jump") && this.playerRB.velocity.y <= 0)
+
+        if (this.player.movementEnabled && !this.airJumped && this.playerRB.velocity.y <= 0)
         {
-            this.jumpQueued = true;
-            this.player.abilityEnabled = false;
-        }   
+            this.player.abilityEnabled = true;
+
+            if (this.player.GetButtonDown("Jump"))
+            {
+                this.jumpQueued = true;
+                this.airJumped = true;
+                this.player.abilityEnabled = false;
+            }
+        }
+            
     }
 }

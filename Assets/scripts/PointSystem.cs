@@ -1,52 +1,44 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-public class PointSystem
+﻿public class PointSystem
 {
-    private static readonly PointSystem instance = new PointSystem();
+    private static PointSystem instance;
     public static PointSystem Instance
     {
         get { return PointSystem.instance; }
     }
 
-    private Dictionary<string, int> points;
-    public Dictionary<string, int> Points
+    public static PointSystem Instantiate(int numPlayers)
+    {
+        return PointSystem.instance = new PointSystem(numPlayers);
+    }
+
+    private int[] points;
+    public int[] Points
     {
         get { return this.points; }
     }
 
-    private PointSystem()
+    private PointSystem(int numberOfPlayers)
     {
-        this.points = new Dictionary<string, int>();
+        this.points = new int[numberOfPlayers];
     }
 
-    public int GetCurrentPoints(string player)
+    public int GetCurrentPoints(int player)
     {
-        int currentPoints;
-        if (this.points.TryGetValue(player, out currentPoints))
-            return currentPoints;
-        return 0;
+        return this.points[player - 1];
     }
 
-    public void SetCurrentPoints(string player, int points)
+    public void SetCurrentPoints(int player, int points)
     {
-        this.points[player] = points;
+        this.points[player - 1] = points;
     }
 
-    public void AddPoints(string player, int points)
+    public void AddPoints(int player, int points)
     {
         this.SetCurrentPoints(player, this.GetCurrentPoints(player) + points);
     }
 
-    public void SubtractPoints(string player, int points)
+    public void SubtractPoints(int player, int points)
     {
         this.SetCurrentPoints(player, this.GetCurrentPoints(player) - points);
-    }
-
-    public string CurrentLeader()
-    {
-        if (this.points.Count == 0)
-            return "";
-        return this.points.Aggregate(this.points.First(), (currentLeader, next) => currentLeader.Value > next.Value ? currentLeader : next).Key;
     }
 }

@@ -9,6 +9,7 @@ public class TestCharacterSelection : MonoBehaviour {
     private void Awake()
     {
         PlayerManager.Instantiate(2);
+        PointSystem.Instantiate(2);
     }
 
     private void Update()
