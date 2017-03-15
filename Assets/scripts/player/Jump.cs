@@ -1,32 +1,27 @@
 ﻿using UnityEngine;
 
-public class JumpController : MonoBehaviour
+public class Jump : MonoBehaviour
 {
     public float jumpVelocity;
 
-    private Rigidbody2D playerRB;
-    private Player player;
+    protected Rigidbody2D playerRB;
+    protected Player player;
 
-    protected virtual int AllowedJumps
-    {
-        get { return 1; }
-    }
-
-    private int numJumps;
-    private bool jumpQueued;
+    protected bool grounded;
+    protected bool jumpQueued;
 
     protected virtual void Awake()
     {
         this.playerRB = this.GetComponent<Rigidbody2D>();
         this.player = this.GetComponent<Player>();
 
-        this.numJumps = 0;
+        this.grounded = false;
         this.jumpQueued = false;
     }
 
     protected virtual void Update()
     {
-        if (this.player.movementEnabled && this.player.GetButtonDown("Jump") && this.numJumps < this.AllowedJumps) 
+        if (this.player.movementEnabled && this.player.GetButtonDown("Jump") && this.grounded) 
             this.jumpQueued = true;
     }
 
@@ -34,8 +29,6 @@ public class JumpController : MonoBehaviour
     {
         if (this.jumpQueued)
         {
-            this.numJumps++;
-
             Vector2 velocity = this.playerRB.velocity;
             if (velocity.y < 0)
                 this.playerRB.velocity = new Vector2(velocity.x, this.jumpVelocity);
@@ -51,7 +44,7 @@ public class JumpController : MonoBehaviour
         {
             case "Platform":
             case "Player":
-                this.numJumps = 0;
+                this.grounded = true;
                 break;    
         }
     }
@@ -62,7 +55,7 @@ public class JumpController : MonoBehaviour
         {
             case "Platform":
             case "Player":
-                this.numJumps = 1;
+                this.grounded = false;
                 break;
 
         }

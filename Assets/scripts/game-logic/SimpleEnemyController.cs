@@ -67,7 +67,7 @@ public class SimpleEnemyController : MonoBehaviour {
 
     private void PlayerJumpOnHead(GameObject player)
     {
-        JumpController jumpController = player.GetComponent<JumpController>();
+        Jump jumpController = player.GetComponent<Jump>();
         Rigidbody2D playerRB = player.GetComponent<Rigidbody2D>();
 
         playerRB.velocity += jumpController.jumpVelocity * Vector2.up;
