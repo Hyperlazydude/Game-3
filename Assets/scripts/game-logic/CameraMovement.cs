@@ -80,7 +80,13 @@ public class CameraMovement : MonoBehaviour {
 
             for (float timeElapsed = 0; timeElapsed < seconds; timeElapsed = Time.time - startTime)
             {
-                this.transform.position = Vector3.Lerp(initialPosition, point, timeElapsed / seconds);
+                float elapsedRatio = timeElapsed / seconds;
+
+                float x = Mathf.SmoothStep(initialPosition.x, point.x, elapsedRatio);
+                float y = Mathf.SmoothStep(initialPosition.y, point.y, elapsedRatio);
+                float z = Mathf.SmoothStep(initialPosition.z, point.z, elapsedRatio);
+
+                this.transform.position = new Vector3(x, y, z);
                 yield return null;
             }
         }

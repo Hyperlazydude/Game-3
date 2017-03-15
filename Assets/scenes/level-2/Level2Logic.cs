@@ -1,11 +1,12 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Level2Logic : LevelFlow {
 
     public Transform deadliftPosition;
-
     public string nextScene;
 
     private bool triggered;
@@ -16,55 +17,28 @@ public class Level2Logic : LevelFlow {
         this.triggered = false;
     }
 
-    protected override void Start()
+    protected override IEnumerator Start()
     {
-        base.Start();
-        this.StartCoroutine(this.LevelIntro());
-    }
+        yield return base.Start();
 
-    private IEnumerator LevelIntro()
-    {
-        CameraMovement camera = CameraMovement.Instance;
         PlayerManager playerManager = PlayerManager.Instance;
-        Dialogue dialogue = Dialogue.Instance;
-
-        string player1Name = playerManager.GetPlayerName(1);
-        string player2Name = playerManager.GetPlayerName(2);
-
-        Vector3 player1Position = playerManager.GetPlayer(1).transform.position;
-        Vector3 player2Position = playerManager.GetPlayer(2).transform.position;
-
-        camera.MoveToPoint(this.deadliftPosition.position, 0.5f);
-        yield return new WaitForSeconds(0.5f);
-        dialogue.Show(player1Name, "That lift looks... deadly.");
-        yield return new WaitForSeconds(1.5f);
-
-        dialogue.Hide();
-        camera.MoveToPoint(player2Position, 0.5f);
-        yield return new WaitForSeconds(0.5f);
-        dialogue.Show(player2Name, "It may be, but we must do anything for our lady!");
-        yield return new WaitForSeconds(1.5f);
-
-        dialogue.Hide();
-        camera.MoveToPoint(player1Position, 0.5f);
-        yield return new WaitForSeconds(0.5f);
-        dialogue.Show(player1Name, "I'm getting the feeling that \"Our Lady\" isn't too bright.");
-        yield return new WaitForSeconds(1.5f);
-
-        dialogue.Hide();
-        camera.MoveToPoint(player2Position, 0.5f);
-        yield return new WaitForSeconds(0.5f);
-        dialogue.Show(player2Name, "How dare you! Saying such thing is blasphemous!");
-        yield return new WaitForSeconds(1.5f);
-
-        dialogue.Hide();
-        camera.MoveToPoint(player1Position, 0.5f);
-        yield return new WaitForSeconds(0.5f);
-        dialogue.Show(player1Name, "<i>(And I don't think she's alone...)</i>");
-        yield return new WaitForSeconds(1.5f);
-
-        dialogue.Hide();
-        camera.TrackPlayers(0.5f);
+        LevelIntro intro = this.intros.First();
+        this.StartCoroutine(intro.PlayIntro(
+            new Dictionary<string, Transform>
+            {
+                {"player-1", playerManager.GetPlayer(1).transform},
+                {"player-2", playerManager.GetPlayer(2).transform},
+                {"deadlift", this.deadliftPosition}
+            },
+            new Dictionary<string, string>
+            {
+                {"player-1", playerManager.GetPlayerName(1)},
+                {"player-2", playerManager.GetPlayerName(2)},
+            }
+        ));
+        yield return new WaitForSeconds(intro.Time);
+        
+        CameraMovement.Instance.TrackPlayers(0.5f);
         yield return new WaitForSeconds(0.5f);
 
         Goal.Instance.Show();

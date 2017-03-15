@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class LevelFlow : MonoBehaviour
 {
-
+    public LevelIntro[] intros;
     public Vector3[] spawns;
 
     protected virtual void Awake()
@@ -10,7 +11,7 @@ public class LevelFlow : MonoBehaviour
         PlayerManager.Instance.SpawnPlayers(this.spawns);
     }
 
-    protected virtual void Start()
+    protected virtual IEnumerator Start()
     {
         PlayerManager playerManager = PlayerManager.Instance;
 
@@ -21,6 +22,8 @@ public class LevelFlow : MonoBehaviour
 
         player1.movementEnabled = player1.abilityEnabled = false;
         player2.movementEnabled = player2.abilityEnabled = false;
+
+        yield return null;
     }
 
     protected virtual void StartLevel()

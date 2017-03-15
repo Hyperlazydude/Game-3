@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public static class CanvasGroupExtensions
+public static class Extensions
 {
     public static IEnumerator FadeAlpha(this CanvasGroup canvasGroup, float newAlpha, float time)
     {
@@ -10,7 +10,7 @@ public static class CanvasGroupExtensions
 
         for (float elapsedTime = 0; elapsedTime <= time; elapsedTime = Time.time - start)
         {
-            canvasGroup.alpha = Mathf.Lerp(initial, newAlpha, elapsedTime / time);
+            canvasGroup.alpha = Mathf.SmoothStep(initial, newAlpha, elapsedTime / time);
             yield return null;
         }
 
