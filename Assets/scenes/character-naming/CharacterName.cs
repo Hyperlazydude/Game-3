@@ -2,7 +2,7 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class TestCharacterName : MonoBehaviour {
+public class CharacterName : MonoBehaviour {
 
     private static readonly string PLAYER_1_DEFAULT_NAME = "Player 1";
     private static readonly string PLAYER_2_DEFAULT_NAME = "Player 2";
@@ -14,14 +14,14 @@ public class TestCharacterName : MonoBehaviour {
     {
         PlayerManager playerManager = PlayerManager.Instance;
 
-        playerManager.SetPlayerName(1, TestCharacterName.PLAYER_1_DEFAULT_NAME);
-        playerManager.SetPlayerName(2, TestCharacterName.PLAYER_2_DEFAULT_NAME);
+        playerManager.SetPlayerName(1, CharacterName.PLAYER_1_DEFAULT_NAME);
+        playerManager.SetPlayerName(2, CharacterName.PLAYER_2_DEFAULT_NAME);
     }
 
     private void Start()
     {
-        this.player1NameField.text = TestCharacterName.PLAYER_1_DEFAULT_NAME;
-        this.player2NameField.text = TestCharacterName.PLAYER_2_DEFAULT_NAME;
+        this.player1NameField.text = CharacterName.PLAYER_1_DEFAULT_NAME;
+        this.player2NameField.text = CharacterName.PLAYER_2_DEFAULT_NAME;
     }
 
     public void SetPlayer1Name(string name)
@@ -50,6 +50,6 @@ public class TestCharacterName : MonoBehaviour {
     {
         // TODO: create an actual tutorial
         //SceneManager.LoadSceneAsync("tutorial");
-        SceneManager.LoadSceneAsync("test-level");
+        SceneManager.LoadSceneAsync("level-1");
     }
 }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class TestCharacterSelectorConfirm : MonoBehaviour {
+public class CharacterSelectorConfirm : MonoBehaviour {
 
     public Text selectedMessage;
     public GameObject notSelectedMessage;

@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class TestCharacterSelection : MonoBehaviour {
+public class CharacterSelection : MonoBehaviour {
     
-    public TestCharacterSelector player1Selector;
-    public TestCharacterSelector player2Selector;
+    public CharacterSelector player1Selector;
+    public CharacterSelector player2Selector;
 
     private void Awake()
     {
@@ -15,6 +15,6 @@ public class TestCharacterSelection : MonoBehaviour {
     private void Update()
     {
         if (this.player1Selector.HasSelected && this.player2Selector.HasSelected)
-            SceneManager.LoadSceneAsync("test-character-name");        
+            SceneManager.LoadSceneAsync("character-name");        
     }
 }

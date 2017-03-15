@@ -1,17 +1,17 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
-public class TestLevelGoalController : MonoBehaviour {
+public class Level2Logic : LevelFlow {
 
     public Finish finishController;
-    public string scene;
+    public string nextScene;
 
     private bool triggered;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         this.triggered = false;
     }
 
@@ -22,7 +22,7 @@ public class TestLevelGoalController : MonoBehaviour {
         {
             this.triggered = false;
             this.finishController.finishText.text = PlayerManager.Instance.GetPlayerName(winner.playerNumber) + " won!";
-			PointSystem.Instance.AddPoints (winner.playerNumber, 50);
+            PointSystem.Instance.AddPoints(winner.playerNumber, 50);
 
             this.finishController.gameObject.SetActive(true);
             this.StartCoroutine(this.GoalHit());
@@ -32,6 +32,6 @@ public class TestLevelGoalController : MonoBehaviour {
     private IEnumerator GoalHit()
     {
         yield return new WaitForSeconds(2);
-        SceneManager.LoadSceneAsync(scene);
+        SceneManager.LoadSceneAsync(nextScene);
     }
 }

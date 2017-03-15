@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class TestCharacterSelectorPreview : MonoBehaviour {
+public class CharacterSelectorPreview : MonoBehaviour {
 
     private static readonly string JUMPER_DESCRIPTION = "A robot that can jump in midair, at the apex of its jump.";
     private static readonly string SHOOTER_DESCRIPTION = "A robot that can shoot projectiles that will temporarily stun enemies.";

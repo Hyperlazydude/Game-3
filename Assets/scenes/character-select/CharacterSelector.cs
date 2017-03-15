@@ -2,13 +2,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TestCharacterSelector : MonoBehaviour {
+public class CharacterSelector : MonoBehaviour {
 
     public int playerNumber;
 
-    public TestCharacterSelectorPreview playerPreview;
-    public TestCharacterSelectorBottomRow bottomRow;
-    public TestCharacterSelectorConfirm selectConfirmation;
+    public CharacterSelectorPreview playerPreview;
+    public CharacterSelectorBottomRow bottomRow;
+    public CharacterSelectorConfirm selectConfirmation;
     
     private bool hasSelected;
     public bool HasSelected

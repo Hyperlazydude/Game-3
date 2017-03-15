@@ -4,12 +4,12 @@ public class LevelFlow : MonoBehaviour
 {
     public Vector3[] spawns;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         PlayerManager.Instance.SpawnPlayers(this.spawns);
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         PlayerManager playerManager = PlayerManager.Instance;
 
@@ -24,7 +24,7 @@ public class LevelFlow : MonoBehaviour
         Countdown.Instance.StartCountdown(this.CountdownOver);
     }
 
-    private void CountdownOver()
+    protected virtual void CountdownOver()
     {
         PlayerManager playerManager = PlayerManager.Instance;
         
