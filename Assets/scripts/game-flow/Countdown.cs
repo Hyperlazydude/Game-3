@@ -15,10 +15,12 @@ public class Countdown : MonoBehaviour {
     private void Awake()
     {
         Countdown.instance = this;
+        this.gameObject.SetActive(false);
     }
 
     public void StartCountdown(System.Action callback)
     {
+        this.gameObject.SetActive(true);
         this.StartCoroutine(this.DoCountdown(callback));
     }
 

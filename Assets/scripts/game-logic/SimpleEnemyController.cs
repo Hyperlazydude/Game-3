@@ -34,7 +34,7 @@ public class SimpleEnemyController : MonoBehaviour {
             this.enemyRB.position = this.platformCollider.bounds.center + this.enemyOffset;
         } else if (this.dead)
         {
-            Vector3 positionInViewport = Camera.main.WorldToViewportPoint(this.enemyRB.position);
+            Vector3 positionInViewport = UnityEngine.Camera.main.WorldToViewportPoint(this.enemyRB.position);
             if (!new Rect(0, 0, 1, 1).Contains(positionInViewport))
                 Object.Destroy(this.gameObject);
         }

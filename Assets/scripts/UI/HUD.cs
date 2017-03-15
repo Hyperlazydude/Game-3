@@ -1,13 +1,32 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class HUD : MonoBehaviour {
 
+    public static void Show()
+    {
+        Array.ForEach(
+            HUD.instances, 
+            (instance) => instance.StartCoroutine(instance.canvasGroup.FadeAlpha(1.0f, 0.5f))
+        );
+    }
+
+    public static void Hide()
+    {
+        Array.ForEach(
+            HUD.instances, 
+            (instance) => instance.StartCoroutine(instance.canvasGroup.FadeAlpha(0, 0.5f))
+        );
+    }
+
     private static readonly float ABILITY_ENABLED_ALPHA = 1;
     private static readonly float ABILITY_DISABLED_ALPHA = 0.5f;
 
+    private static readonly HUD[] instances = new HUD[2];
+    
     public int playerNumber;
-
+    
     public Image jumperAbility;
     public Image bomberAbility;
     public Image shooterAbility;
@@ -23,9 +42,17 @@ public class HUD : MonoBehaviour {
     public Text points;
     public Text playerName;
 
+    private CanvasGroup canvasGroup;
+
     private Image activeAbility;
     private Player player;
-    
+
+    private void Awake()
+    {
+        this.canvasGroup = this.GetComponent<CanvasGroup>();
+        HUD.instances[this.playerNumber - 1] = this;
+    }
+
     private void Start()
     {
         this.player = PlayerManager.Instance.GetPlayer(this.playerNumber);
@@ -55,6 +82,8 @@ public class HUD : MonoBehaviour {
                 this.shooterImage.gameObject.SetActive(true);
                 break;
         }
+
+        this.canvasGroup.alpha = 0;
     }
 
     private void Update()

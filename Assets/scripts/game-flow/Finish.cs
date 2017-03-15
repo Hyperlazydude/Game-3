@@ -14,6 +14,7 @@ public class Finish : MonoBehaviour {
     private void Awake()
     {
         Finish.instance = this;
+        this.gameObject.SetActive(false);
     }
 
     public void ShowFinish(string text)

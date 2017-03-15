@@ -2,6 +2,7 @@
 
 public class LevelFlow : MonoBehaviour
 {
+
     public Vector3[] spawns;
 
     protected virtual void Awake()
@@ -20,11 +21,9 @@ public class LevelFlow : MonoBehaviour
 
         player1.movementEnabled = player1.abilityEnabled = false;
         player2.movementEnabled = player2.abilityEnabled = false;
-        
-        Countdown.Instance.StartCountdown(this.CountdownOver);
     }
 
-    protected virtual void CountdownOver()
+    protected virtual void StartLevel()
     {
         PlayerManager playerManager = PlayerManager.Instance;
         
@@ -33,6 +32,8 @@ public class LevelFlow : MonoBehaviour
 
         player1.movementEnabled = player1.abilityEnabled = true;
         player2.movementEnabled = player2.abilityEnabled = true;
+
+        HUD.Show();
     }
 
 }

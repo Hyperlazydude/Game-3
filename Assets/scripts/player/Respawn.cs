@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class RespawnController : MonoBehaviour
+public class Respawn : MonoBehaviour
 {
     public float respawnGhostTime;
     

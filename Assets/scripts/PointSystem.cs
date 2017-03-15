@@ -20,6 +20,8 @@
     private PointSystem(int numberOfPlayers)
     {
         this.points = new int[numberOfPlayers];
+        for (int i = 0; i < numberOfPlayers; i++)
+            this.points[i] = 0;
     }
 
     public int GetCurrentPoints(int player)
