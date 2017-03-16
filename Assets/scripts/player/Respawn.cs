@@ -40,7 +40,7 @@ public class Respawn : MonoBehaviour
         if (
             collision.gameObject.CompareTag("Platform") &&
             CollisionUtilities.GetCollisionPosition(collision) == CollisionUtilities.CollisionPosition.BOTTOM &&
-            CollisionUtilities.FullyContactingPlatform(collision.collider.bounds, this.playerCollider.bounds)
+            CollisionUtilities.FullyContactingPlatform(collision.collider.bounds, this.playerCollider.bounds, 0.25f)
         )
         {
             if (collision.collider != this.lastPlatformCollider)

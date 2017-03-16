@@ -33,7 +33,7 @@ public static class CollisionUtilities
 
     }
 
-    public static bool FullyContactingPlatform (Bounds platform, Bounds inner)
+	public static bool FullyContactingPlatform (Bounds platform, Bounds inner, float buffer)
     {
         float outerMin, outerMax;
         float innerMin, innerMax;
@@ -41,7 +41,7 @@ public static class CollisionUtilities
         CollisionUtilities.GetBoundsXLimits(platform, out outerMin, out outerMax);
         CollisionUtilities.GetBoundsXLimits(inner, out innerMin, out innerMax);
 
-        return outerMin <= innerMin && outerMax >= innerMax;
+        return outerMin-buffer <= innerMin && outerMax+buffer >= innerMax;
     }
 
     public static void GetBoundsXLimits(Bounds bounds, out float min, out float max)

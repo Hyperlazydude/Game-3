@@ -27,7 +27,7 @@ public class SimpleEnemyController : MonoBehaviour {
     {
         if (this.platformCollider != null)
         {
-            if (!CollisionUtilities.FullyContactingPlatform(this.platformCollider.bounds, this.enemyCollider.bounds))
+            if (!CollisionUtilities.FullyContactingPlatform(this.platformCollider.bounds, this.enemyCollider.bounds, 0f))
                 this.direction *= -1;
 
             this.enemyOffset += Vector3.right * this.direction * Time.deltaTime;

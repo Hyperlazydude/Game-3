@@ -58,6 +58,7 @@ public class Level3Logic : LevelFlow {
 		if (!this.triggered && winner != null)
 		{
 			this.triggered = false;
+			this.gameObject.GetComponent<Collider2D> ().enabled = false;
 
 			Finish finish = Finish.Instance;
 			HUD.Hide();
@@ -79,10 +80,11 @@ public class Level3Logic : LevelFlow {
 
 			yield return new WaitForSeconds(2f);
 
-			if (PointSystem.Instance.GetCurrentPoints (PointSystem.Instance.CurrentLeader ()) >= 200)
+			if (PointSystem.Instance.GetCurrentPoints (PointSystem.Instance.CurrentLeader ()) >= 200) {
 				SceneManager.LoadSceneAsync ("winning-scene");
-
-			SceneManager.LoadSceneAsync(nextScene);
+			} else {
+				SceneManager.LoadSceneAsync (nextScene);
+			}
 		}
 	}
 }

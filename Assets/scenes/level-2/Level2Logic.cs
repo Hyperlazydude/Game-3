@@ -54,6 +54,7 @@ public class Level2Logic : LevelFlow {
         if (!this.triggered && winner != null)
         {
             this.triggered = false;
+			this.gameObject.GetComponent<Collider2D> ().enabled = false;
 
             Finish finish = Finish.Instance;
             HUD.Hide();
