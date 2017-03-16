@@ -62,7 +62,7 @@ public class Level2Logic : LevelFlow {
             finish.HideFinish();
 
             PointsSummary pointsSummary = PointsSummary.Instance;
-            int newPoints = PointSystem.Instance.AddPoints(winner.playerNumber, 75);
+			int newPoints = PointSystem.Instance.AddPoints(winner.playerNumber, 75);
             pointsSummary.Show();
             pointsSummary.SetCurrentPoints(winner.playerNumber, newPoints, 2f);
             yield return new WaitForSeconds(2f);
