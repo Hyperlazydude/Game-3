@@ -21,19 +21,22 @@ public class Level1Logic : LevelFlow {
         yield return base.Start();
 
         PlayerManager playerManager = PlayerManager.Instance;
+		PointSystem player = PointSystem.Instance;
+		int leader = player.CurrentLeader ();
+		int second = player.Second ();
 
         LevelIntro intro = this.intros.First();
         this.StartCoroutine(intro.PlayIntro(
             new Dictionary<string, Transform>
             {
-                {"player-1", playerManager.GetPlayer(1).transform},
-                {"player-2", playerManager.GetPlayer(2).transform},
+				{"player-1", playerManager.GetPlayer(leader).transform},
+				{"player-2", playerManager.GetPlayer(second).transform},
                 {"heart", this.transform}
             },
             new Dictionary<string, string>
             {
-                {"player-1", playerManager.GetPlayerName(1)},
-                {"player-2", playerManager.GetPlayerName(2)},
+				{"player-1", playerManager.GetPlayerName(leader)},
+                {"player-2", playerManager.GetPlayerName(second)},
                 {"heart", "Heart"}
             }
         ));

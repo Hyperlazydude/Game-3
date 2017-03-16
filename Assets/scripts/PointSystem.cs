@@ -51,4 +51,14 @@
     {
         return this.SetCurrentPoints(player, this.GetCurrentPoints(player) - points);
     }
+
+	public int CurrentLeader()
+	{
+		return GetCurrentPoints (1) >= GetCurrentPoints (2) ? 1 : 2;
+	}
+
+	public int Second()
+	{
+		return this.GetCurrentPoints (1) >= GetCurrentPoints (2) ? 2 : 1;
+	}
 }
