@@ -80,8 +80,6 @@ public class LevelTutorialLogic : LevelFlow {
 			yield return new WaitForSeconds(2f);
 			finish.HideFinish();
 
-			PointSystem.Instance.AddPoints (winner.playerNumber, 50);
-
 			LevelIntro intro = this.intros[1];
 			this.StartCoroutine(intro.PlayIntro(
 				new Dictionary<string, Transform>
@@ -100,10 +98,9 @@ public class LevelTutorialLogic : LevelFlow {
 
 			yield return new WaitForSeconds(intro.Time);
 
-			CameraMovement.Instance.TrackPlayers(0.5f);
-			yield return new WaitForSeconds(0.5f);
+			CameraMovement.Instance.TrackPlayers(1.5f);
+			yield return new WaitForSeconds(1.5f);
 
-			PointSystem.Instance.SubtractPoints (winner.playerNumber, 50);
 			PointsSummary pointsSummary = PointsSummary.Instance;
 //			int newPoints = PointSystem.Instance.AddPoints(winner.playerNumber, 50);
 			pointsSummary.Show();

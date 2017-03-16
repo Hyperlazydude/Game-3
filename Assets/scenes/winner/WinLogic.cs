@@ -31,21 +31,21 @@ public class WinLogic : LevelFlow {
 		this.StartCoroutine(intro.PlayIntro(
 			new Dictionary<string, Transform>
 			{
-				{"player-1", playerManager.GetPlayer(leader).transform},
-				{"player-2", playerManager.GetPlayer(second).transform},
+				{"player-winner", playerManager.GetPlayer(leader).transform},
+				{"player-loser", playerManager.GetPlayer(second).transform},
 				{"heart", this.transform}
 			},
 			new Dictionary<string, string>
 			{
-				{"player-1", playerManager.GetPlayerName(leader)},
-				{"player-2", playerManager.GetPlayerName(second)},
+				{"player-winner", playerManager.GetPlayerName(leader)},
+				{"player-loser", playerManager.GetPlayerName(second)},
 				{"heart", "Heart"}
 			}
 		));
 		yield return new WaitForSeconds(intro.Time);
 
-		CameraMovement.Instance.TrackPlayers(0.5f);
-		yield return new WaitForSeconds(0.5f);
+		CameraMovement.Instance.TrackPlayers(1.5f);
+		yield return new WaitForSeconds(1.5f);
 
 		Finish finish = Finish.Instance;
 		finish.ShowFinish(PlayerManager.Instance.GetPlayerName(leader) + " won!");

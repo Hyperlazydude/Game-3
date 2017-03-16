@@ -29,14 +29,14 @@ public class Level3Logic : LevelFlow {
 		this.StartCoroutine(intro.PlayIntro(
 			new Dictionary<string, Transform>
 			{
-				{"player-1", playerManager.GetPlayer(leader).transform},
-				{"player-2", playerManager.GetPlayer(second).transform},
+				{"player-winner", playerManager.GetPlayer(leader).transform},
+				{"player-loser", playerManager.GetPlayer(second).transform},
 				{"heart", this.transform}
 			},
 			new Dictionary<string, string>
 			{
-				{"player-1", playerManager.GetPlayerName(leader)},
-				{"player-2", playerManager.GetPlayerName(second)},
+				{"player-winner", playerManager.GetPlayerName(leader)},
+				{"player-loser", playerManager.GetPlayerName(second)},
 				{"heart", "Heart"}
 			}
 		));
@@ -65,14 +65,23 @@ public class Level3Logic : LevelFlow {
 			yield return new WaitForSeconds(2f);
 			finish.HideFinish();
 
+			int points = 75;
+			if (PointSystem.Instance.CurrentLeader() == winner.playerNumber 
+				&& PointSystem.Instance.GetCurrentPoints(winner.playerNumber) == 150)
+				points = 50;
+
 			PointsSummary pointsSummary = PointsSummary.Instance;
-			int newPoints = PointSystem.Instance.AddPoints(winner.playerNumber, 75);
+			int newPoints = PointSystem.Instance.AddPoints(winner.playerNumber, points);
 			pointsSummary.Show();
 			pointsSummary.SetCurrentPoints(winner.playerNumber, newPoints, 2f);
 			yield return new WaitForSeconds(2f);
 			pointsSummary.Hide();
 
 			yield return new WaitForSeconds(2f);
+
+			if (PointSystem.Instance.GetCurrentPoints (PointSystem.Instance.CurrentLeader ()) >= 200)
+				SceneManager.LoadSceneAsync ("winning-scene");
+
 			SceneManager.LoadSceneAsync(nextScene);
 		}
 	}
