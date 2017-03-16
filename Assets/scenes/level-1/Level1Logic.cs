@@ -49,24 +49,28 @@ public class Level1Logic : LevelFlow {
         Countdown.Instance.StartCountdown(this.StartLevel);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private IEnumerator OnTriggerEnter2D(Collider2D collision)
     {
         Player winner = collision.gameObject.GetComponent<Player>();
         if (!this.triggered && winner != null)
         {
             this.triggered = false;
 
+            Finish finish = Finish.Instance;
             HUD.Hide();
-            Finish.Instance.ShowFinish(PlayerManager.Instance.GetPlayerName(winner.playerNumber) + " won!");
-            PointSystem.Instance.AddPoints(winner.playerNumber, 50);
-            
-            this.StartCoroutine(this.GoalHit());
-        }
-    }
+            finish.ShowFinish(PlayerManager.Instance.GetPlayerName(winner.playerNumber) + " won!");
+            yield return new WaitForSeconds(2f);
+            finish.HideFinish();
 
-    private IEnumerator GoalHit()
-    {
-        yield return new WaitForSeconds(2);
-        SceneManager.LoadSceneAsync(nextScene);
+            PointsSummary pointsSummary = PointsSummary.Instance;
+            int newPoints = PointSystem.Instance.AddPoints(winner.playerNumber, 50);
+            pointsSummary.Show();
+            pointsSummary.SetCurrentPoints(winner.playerNumber, newPoints, 2f);
+            yield return new WaitForSeconds(2f);
+            pointsSummary.Hide();
+
+            yield return new WaitForSeconds(2f);
+            SceneManager.LoadSceneAsync(nextScene);
+        }
     }
 }

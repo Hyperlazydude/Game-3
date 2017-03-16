@@ -9,7 +9,7 @@ public class CharacterSelection : MonoBehaviour {
     private void Awake()
     {
         PlayerManager.Instantiate(2);
-        PointSystem.Instantiate(2);
+        PointSystem.Instantiate(2, 200);
     }
 
     private void Update()

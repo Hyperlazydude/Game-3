@@ -6,22 +6,30 @@
         get { return PointSystem.instance; }
     }
 
-    public static PointSystem Instantiate(int numPlayers)
+    public static PointSystem Instantiate(int numPlayers, int pointLimit)
     {
-        return PointSystem.instance = new PointSystem(numPlayers);
+        return PointSystem.instance = new PointSystem(numPlayers, pointLimit);
     }
 
-    private int[] points;
+    private readonly int[] points;
     public int[] Points
     {
         get { return this.points; }
     }
 
-    private PointSystem(int numberOfPlayers)
+    private readonly int pointLimit;
+    public int PointTarget
+    {
+        get { return this.pointLimit; }
+    }
+
+    private PointSystem(int numberOfPlayers, int pointLimit)
     {
         this.points = new int[numberOfPlayers];
         for (int i = 0; i < numberOfPlayers; i++)
             this.points[i] = 0;
+
+        this.pointLimit = pointLimit;
     }
 
     public int GetCurrentPoints(int player)
@@ -29,18 +37,18 @@
         return this.points[player - 1];
     }
 
-    public void SetCurrentPoints(int player, int points)
+    public int SetCurrentPoints(int player, int points)
     {
-        this.points[player - 1] = points;
+        return this.points[player - 1] = points;
     }
 
-    public void AddPoints(int player, int points)
+    public int AddPoints(int player, int points)
     {
-        this.SetCurrentPoints(player, this.GetCurrentPoints(player) + points);
+        return this.SetCurrentPoints(player, this.GetCurrentPoints(player) + points);
     }
 
-    public void SubtractPoints(int player, int points)
+    public int SubtractPoints(int player, int points)
     {
-        this.SetCurrentPoints(player, this.GetCurrentPoints(player) - points);
+        return this.SetCurrentPoints(player, this.GetCurrentPoints(player) - points);
     }
 }
