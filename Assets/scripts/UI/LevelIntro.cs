@@ -31,6 +31,8 @@ public class LevelIntro : ScriptableObject
             CameraMovement camera = CameraMovement.Instance;
             Dialogue dialogue = Dialogue.Instance;
             PlayerManager playerManager = PlayerManager.Instance;
+			int winner = PointSystem.Instance.CurrentLeader ();
+			int loser = PointSystem.Instance.Second ();
 
             DialogueLine currentLine;
             
@@ -41,6 +43,8 @@ public class LevelIntro : ScriptableObject
                 camera.MoveToPoint(transformMap[currentLine.trackingID].position, currentLine.transitionTime);
                 yield return new WaitForSeconds(currentLine.transitionTime);
 
+				currentLine.dialogueLine = currentLine.dialogueLine.Replace ("[player-winner]", playerManager.GetPlayerName (winner));
+				currentLine.dialogueLine = currentLine.dialogueLine.Replace ("[player-loser]", playerManager.GetPlayerName (loser));
                 dialogue.Show(nameMap[currentLine.nameID], currentLine.dialogueLine);
                 yield return new WaitForSeconds(currentLine.dialogueTime);
 
