@@ -29,14 +29,14 @@ public class Level5Logic : LevelFlow {
 		this.StartCoroutine(intro.PlayIntro(
 			new Dictionary<string, Transform>
 			{
-				{"player-1", playerManager.GetPlayer(leader).transform},
-				{"player-2", playerManager.GetPlayer(second).transform},
+				{"player-winner", playerManager.GetPlayer(leader).transform},
+				{"player-loser", playerManager.GetPlayer(second).transform},
 				{"heart", this.transform}
 			},
 			new Dictionary<string, string>
 			{
-				{"player-1", playerManager.GetPlayerName(leader)},
-				{"player-2", playerManager.GetPlayerName(second)},
+				{"player-winner", playerManager.GetPlayerName(leader)},
+				{"player-loser", playerManager.GetPlayerName(second)},
 				{"heart", "Heart"}
 			}
 		));
@@ -74,7 +74,11 @@ public class Level5Logic : LevelFlow {
 			pointsSummary.Hide();
 
 			yield return new WaitForSeconds(2f);
-			SceneManager.LoadSceneAsync(nextScene);
+			if (PointSystem.Instance.GetCurrentPoints (PointSystem.Instance.CurrentLeader ()) >= 200) {
+				SceneManager.LoadSceneAsync ("winning-scene");
+			} else {
+				SceneManager.LoadSceneAsync(SwitchScene.Instance.GetLevel());
+			}
 		}
 	}
 }

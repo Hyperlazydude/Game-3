@@ -62,6 +62,11 @@ public class Level2Logic : LevelFlow {
             yield return new WaitForSeconds(2f);
             finish.HideFinish();
 
+//			int points = 75;
+//			if (PointSystem.Instance.CurrentLeader() == winner.playerNumber 
+//				&& PointSystem.Instance.GetCurrentPoints(winner.playerNumber) == 150)
+//				points = 50;
+
             PointsSummary pointsSummary = PointsSummary.Instance;
 			int newPoints = PointSystem.Instance.AddPoints(winner.playerNumber, 75);
             pointsSummary.Show();
@@ -70,7 +75,11 @@ public class Level2Logic : LevelFlow {
             pointsSummary.Hide();
 
             yield return new WaitForSeconds(2f);
-            SceneManager.LoadSceneAsync(nextScene);
+			if (PointSystem.Instance.GetCurrentPoints (PointSystem.Instance.CurrentLeader ()) >= 200) {
+				SceneManager.LoadSceneAsync ("winning-scene");
+			} else {
+				SceneManager.LoadSceneAsync(SwitchScene.Instance.GetLevel());
+			}
         }
     }
 }

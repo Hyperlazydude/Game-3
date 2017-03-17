@@ -99,23 +99,12 @@ public class LevelTutorialLogic : LevelFlow {
 			yield return new WaitForSeconds(intro.Time);
 
 			CameraMovement.Instance.TrackPlayers(1.5f);
-			yield return new WaitForSeconds(1.5f);
-
-			PointsSummary pointsSummary = PointsSummary.Instance;
-//			int newPoints = PointSystem.Instance.AddPoints(winner.playerNumber, 50);
-			pointsSummary.Show();
-//			pointsSummary.SetCurrentPoints(winner.playerNumber, newPoints, 2f);
 			yield return new WaitForSeconds(2f);
-			pointsSummary.Hide();
 
-			yield return new WaitForSeconds(2f);
-			SceneManager.LoadSceneAsync(nextScene);
+			SwitchScene switchScene = SwitchScene.Instance;
+
+			switchScene.ShuffleLevel();
+			SceneManager.LoadSceneAsync(switchScene.GetLevel());
 		}
-	}
-
-	private IEnumerator GoalHit()
-	{
-		yield return new WaitForSeconds(2);
-		SceneManager.LoadSceneAsync(nextScene);
 	}
 }

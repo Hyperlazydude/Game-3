@@ -67,10 +67,12 @@ public class Level4Logic : LevelFlow {
 			finish.HideFinish();
 
 			PointsSummary pointsSummary = PointsSummary.Instance;
-			int points = 75;
-			if (PointSystem.Instance.CurrentLeader() == winner.playerNumber)
-				points = 50;
-			int newPoints = PointSystem.Instance.AddPoints(winner.playerNumber, points);
+//			int points = 75;
+//			if (PointSystem.Instance.CurrentLeader() == winner.playerNumber)
+//				points = 50;
+
+
+			int newPoints = PointSystem.Instance.AddPoints(winner.playerNumber, 75);
 			pointsSummary.Show();
 			pointsSummary.SetCurrentPoints(winner.playerNumber, newPoints, 2f);
 			yield return new WaitForSeconds(2f);
@@ -81,7 +83,7 @@ public class Level4Logic : LevelFlow {
 			if (PointSystem.Instance.GetCurrentPoints (PointSystem.Instance.CurrentLeader ()) >= 200) {
 				SceneManager.LoadSceneAsync ("winning-scene");
 			} else {
-				SceneManager.LoadSceneAsync (nextScene);
+				SceneManager.LoadSceneAsync(SwitchScene.Instance.GetLevel());
 			}
 		}
 	}

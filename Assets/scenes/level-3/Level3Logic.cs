@@ -66,13 +66,13 @@ public class Level3Logic : LevelFlow {
 			yield return new WaitForSeconds(2f);
 			finish.HideFinish();
 
-			int points = 75;
-			if (PointSystem.Instance.CurrentLeader() == winner.playerNumber 
-				&& PointSystem.Instance.GetCurrentPoints(winner.playerNumber) == 150)
-				points = 50;
+//			int points = 75;
+//			if (PointSystem.Instance.CurrentLeader() == winner.playerNumber 
+//				&& PointSystem.Instance.GetCurrentPoints(winner.playerNumber) == 150)
+//				points = 50;
 
 			PointsSummary pointsSummary = PointsSummary.Instance;
-			int newPoints = PointSystem.Instance.AddPoints(winner.playerNumber, points);
+			int newPoints = PointSystem.Instance.AddPoints(winner.playerNumber, 75);
 			pointsSummary.Show();
 			pointsSummary.SetCurrentPoints(winner.playerNumber, newPoints, 2f);
 			yield return new WaitForSeconds(2f);
@@ -83,7 +83,7 @@ public class Level3Logic : LevelFlow {
 			if (PointSystem.Instance.GetCurrentPoints (PointSystem.Instance.CurrentLeader ()) >= 200) {
 				SceneManager.LoadSceneAsync ("winning-scene");
 			} else {
-				SceneManager.LoadSceneAsync (nextScene);
+				SceneManager.LoadSceneAsync(SwitchScene.Instance.GetLevel());
 			}
 		}
 	}

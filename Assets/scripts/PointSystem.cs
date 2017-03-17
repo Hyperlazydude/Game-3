@@ -1,4 +1,6 @@
-﻿public class PointSystem
+﻿using UnityEngine;
+
+public class PointSystem
 {
     private static PointSystem instance;
     public static PointSystem Instance
@@ -39,7 +41,7 @@
 
     public int SetCurrentPoints(int player, int points)
     {
-        return this.points[player - 1] = points;
+		return this.points[player - 1] = Mathf.Clamp(points, 0, this.pointLimit);
     }
 
     public int AddPoints(int player, int points)
