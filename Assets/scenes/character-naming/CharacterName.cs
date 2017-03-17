@@ -48,9 +48,6 @@ public class CharacterName : MonoBehaviour {
 
     public void OnStartClick()
     {
-        // TODO: create an actual tutorial
-        //SceneManager.LoadSceneAsync("level-tutorial");
-        SceneManager.LoadSceneAsync("level-5");
-		//SceneManager.LoadSceneAsync("winning-scene");
+        SceneManager.LoadSceneAsync("level-tutorial");
     }
 }
